@@ -198,14 +198,18 @@ if($_POST['QueryType'] == 'getePassPdf')
 					'.$dataArr[0]['res_name'].'
 				</td>
 			</tr>';
-	
+		if($dataArr[0]['passfor'] == 'L'){
+    $warningText = 'Litigant must carry a valid Photo ID with this ePass.';
+} else {
+    $warningText = '';
+}
 	if($dataArr[0]['passfor'] == 'L'){
-			$html .='<tr>
-				<td colspan="2" style="text-align: left;"><b>Present residential address</b></td>
-				<td colspan="2" style="text-align: left;">
-					'.$dataArr[0]['paddress'].'
-				</td>
-			</tr>';
+			// $html .='<tr>
+			// 	<td colspan="2" style="text-align: left;"><b>Present residential address</b></td>
+			// 	<td colspan="2" style="text-align: left;">
+			// 		'.$dataArr[0]['paddress'].'
+			// 	</td>
+			// </tr>';
 												 
 			$html .='<tr>
 				<td colspan="2" style="text-align: left;"><b>Pass recommended by</b></td>
@@ -214,7 +218,7 @@ if($_POST['QueryType'] == 'getePassPdf')
 				</td>
 			</tr>';
 
-			$validfor = 'This entry pass is issued for <b>'.$dataArr[0]['party_name'].'</b> and valid for item no. <b>'.$dataArr[0]['item_no'].'</b> in court no. <b>'.$dataArr[0]['court_no'].'</b>.<br/><br/>This pass is valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.';
+			$validfor = 'This entry pass is issued for <b>'.$dataArr[0]['party_name'].'</b> &nbsp;R/O of <b>'.$dataArr[0]['paddress'].'</b>  and valid for item no. <b>'.$dataArr[0]['item_no'].'</b> in court no. <b>'.$dataArr[0]['court_no'].'</b>.This pass is valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.'.$warningText.'';
 		}
 		else if($_SESSION['lawyer']['passtype'] == '1'){
 			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span> and valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.';
@@ -233,11 +237,7 @@ if($_POST['QueryType'] == 'getePassPdf')
 		}
 
 
-		if($dataArr[0]['passfor'] == 'L'){
-    $warningText = 'Litigant must carry a valid Photo ID with this ePass.';
-} else {
-    $warningText = '';
-}
+	
 
 	
 	$html .= '</table>
