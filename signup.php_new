@@ -1,0 +1,1476 @@
+<?phplocalhostlocalhost
+	include 'urlConfig.php';
+	if(isset($_SESSION['lawyer']['user_id']) && $_SESSION['lawyer']['user_id'] != "")
+	{
+		header("Location: generate-pass.php");
+		//header("Location:".$base_url."generate-pass.php");
+	}
+
+	$csrftoken= md5(uniqid());
+	$_SESSION['lawyer']['CSRF_Token']= $csrftoken;
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>RHC e-Gate Pass | Register</title>			 	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="robots" content="noindex, nofollow">      
+		<meta http-equiv="cache-control" content="max-age=0" />
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="expires" content="Mon, 01 Jan 1990 00:00:00 GMT">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="pragma" content="no-cache">        
+		<meta http-equiv="cache-control" content="private" />
+		<meta http-equiv="cache-control" content="pre-check=0" />
+		<meta http-equiv="cache-control" content="post-check=0" />
+		<meta http-equiv="cache-control" content="must-revalidate" />
+		<meta http-equiv="content-language" content="en">
+		<meta http-equiv="content-script-type" content="text/javascript">
+		<link rel="shortcut icon" href="images/national-emblem-india.PNG">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="RHC, RHCB, Lawyer, Cause list, index, home page, login page, Rajasthan High Court, RHCB Website, Rajsthan Govt" />
+		<meta name="description" content="A cluster of Princely States with an oasis known as Ajmer-Merwara, a British India Territory, was given geographical expression as Rajputana. These Twenty and odd Rajputana States before 20th Century AD were dynastic and the Rulers were the fountain head of all Executive, Legislative and Judicial Authority in the States. As soon as the country got freedom from British Imperialism, the process of integration of the princely States to form bigger units was initiated." />
+		<meta http-equiv="Content-Security-Policy">
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8; X-Content-Type-Options=nosniff" />
+		<script type="application/x-javascript"> 
+			addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+			function hideURLbar(){ window.scrollTo(0,1); } 
+		</script>
+
+		<style>
+			.ui-tooltip, .arrow:after {
+				background: #fff;
+				border: 1px solid #C90;
+			}
+			.ui-tooltip {
+				padding: 10px 20px;
+				color: #000;
+				border-radius: 20px;
+				font-size:12px;
+			}
+			.arrow {
+				width: 70px;
+				height: 30px;
+				overflow: hidden;
+				position: absolute;
+				top: 40%;
+				left: -69px;
+			}
+			.arrow.top {
+				/*top: -16px;
+				bottom: auto;*/
+			}
+			.arrow.left {
+				/*left: 20%;*/
+			}
+			.arrow:after {
+			content: "";
+			position: absolute;
+				/* left: 26px;*/
+				right: -17px;
+				width: 25px;
+				height: 25px;
+				box-shadow: 6px 5px 9px -9px black;
+				-webkit-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				-ms-transform: rotate(45deg);
+				-o-transform: rotate(45deg);
+				tranform: rotate(45deg);
+			}
+			.arrow.top:after {
+				bottom: -20px;
+				top: auto;
+			}
+			.ui-tooltip-content {
+				position: absolute;
+				padding: 1em;
+			}
+		</style>
+	
+	<link rel="stylesheet" href="includes/libs/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="includes/libs/bootstrap/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="includes/css/style.css">
+	<link rel="stylesheet" href="includes/css/stylesheet1.css">
+	<link rel="stylesheet" type="text/css" href="includes/css/datepicker3.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-timepicker.min.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/loader.css"/>
+	
+	<script type="text/javascript" src="includes/js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="includes/js/moment.js"></script>
+	<script type="text/javascript" src="includes/js/SHA256.js"></script>
+	<script type="text/javascript" src="includes/js/validation_file.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/transition.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/collapse.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="includes/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="includes/js/validation_file.js?random=<?php echo rand(0001, 9999);?>"></script>
+	<script>
+		window.flag = [];
+	</script>
+</head>
+
+<body onunload="" oncontextmenu="return false" ondragstart="return false" onkeypress="return disableCtrlKeyCombination(event);" onkeydown="return disableCtrlKeyCombination(event);">
+<?php include 'header.php'; ?>
+<div class="container text-center" style="min-height:420px;">
+	<noscript>
+		<h4 style="color: red;">Please enable JavaScript in your browser to use this application.</h4>
+	</noscript>
+	<div class="clearfix"></div>
+	<span id="errMsg"></span>	
+		<div class="loading" id="loading" style="display:none;"><img src="images/loader.svg"></div>
+	<br/>
+	<input type="hidden" id="hiddenUserId" class="regExpForTextField"/>
+	<form class="form-horizontal" id='advocateForm' method="post" enctype='multipart/form-data'>
+		<div class="alert alert-danger form_blank_error_message col-md-6 col-md-offset-3" style="display:none">
+			<strong>Error!</strong> All Fields are mandatory.
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12">
+			</div>
+		</div>
+		<div class="row" style="margin-bottom:20px;">
+			<div class="form-group">
+				<label class="control-label col-md-3">Pass Type:</label>
+				<div class="col-md-7 col-sm-10">
+					<label class="radio-inline">
+						<input type="radio" name="passtype" class="passtype" value="1" onclick="chkPassType();"> Sr. Advocate
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="passtype" class="passtype" value="2" onclick="chkPassType();"> Advocate (For Self and Litigants)
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="passtype" class="passtype" value="3" onclick="chkPassType();"> Party in Person
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="row INPUT_DIV DIV_ADV_ENROLL">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_enroll_no"><span class="req" title="required">*</span> <span class="LabelNameEnroll">Bar Council Enrollment No:</span></label>
+					<div class="col-sm-7 col-md-6">
+						<div class="input-group">
+							<input type="text" class="form-control input-sm name_validation req-Feild enroll_number_check regExpForEnrNo" autocomplete="off" id="ad_enroll_no" name="ad_enroll_no" onkeypress="return isAlphaNumericCharater(event);" maxlength="16" placeholder="Enrollment No e.g. R9992020" />
+							<span class="input-group-addon SR_ADV_TXT">Sr.</span>
+						</div>
+						<span class="enroll_number_check_error" style="color:red;font-weight:bold;display:none;"></span>
+					</div>
+				</div>	
+			</div>	
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_name"><span class="req" title="required">*</span> <span class="LabelName">Advocate Name:</span></label>
+					<div class="col-sm-6">
+						<input type="hidden" id="adv_code" name="adv_code"/>
+						<input type="text" title="Same Name will be printed in causelist"  autocomplete="off" class="regExpForTextField form-control input-sm name_validation req-Feild" id="ad_name" name="ad_name" placeholder="Enter advocate name" maxlength="100" onkeypress="return AllowAlphabet(event);" readonly />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row DIV_LITIGANTS" style="display:none; margin-bottom:20px;">
+			<label class="control-label col-md-12" style="text-align:center !important;">
+				NOTE:- PLEASE ENSURE THAT YOU ARE READY WITH YOUR PHOTO IMAGE SIZE BETWEEN 20KB AND 100KB IN JPEG OR JPG FORMAT.
+			</label>
+		</div>
+		<div class="row INPUT_DIV DIV_LITIGANTS" style="display:none;">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="party_name"><span class="req" title="required">*</span> <span class="LabelName">Party Name:</span></label>
+					<div class="col-sm-6">
+						<input type="text" autocomplete="off" class="regExpForTextField form-control input-sm name_validation req-Feild" id="party_name" name="party_name" placeholder="Enter Party name" maxlength="100" onkeypress="return AllowAlphabet(event);" />
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="party_name"><span class="req" title="required">*</span> <span class="LabelName">Establishment:</span></label>
+					<div class="col-sm-6">
+						<label class="radio-inline">
+							<input type="radio" name="estttype" class="estttype" value="P"> RHC Jodhpur
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="estttype" class="estttype" value="B"> RHCB Jaipur
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row INPUT_DIV">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_mobile_no"><span class="req" title="required">*</span> Mobile No.:</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control req-Feild contact_number_check" id="ad_mobile_no" name="ad_mobile_no" placeholder="Enter mobile no. in 10 digits" pattern="[0-9]*" minlength="10" maxlength="10" required onkeypress="return onlyNumbers(event);" readonly autocomplete="off"/>
+						<span class="mobile_number_check_error" style="color:red;font-weight:bold;display:none;"></span>
+						<span class="mobile_number_check_error_1" style="color:red;font-weight:bold;"></span>
+					</div>
+				</div>		
+			</div>	
+			<div class="col-md-6">			
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_email"><span class="req" title="required">*</span> Email Id:</label>
+					<div class="col-sm-6">
+						<input type="email" style="text-transform: lowercase;" autocomplete="off" class="form-control req-Feild email_check" id="ad_email" name="ad_email" placeholder="Enter valid email address" maxlength="100" required>
+						<span class="email_check_error" style="color:red;font-weight:bold;display:none;"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row INPUT_DIV_OTP">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_gender"><span class="req" title="required">*</span> Gender:</label>
+					<div class="col-sm-6">
+						<select class="form-control input-sm req-Feild"  id="ad_gender" name="ad_gender" required>
+							<option value="">Select</option>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+							<option value="O">Other</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_dob"><span class="req" title="required">*</span> DOB:</label>
+					<div class="col-sm-6">
+						<input type="text" autocomplete="off" class="form-control input-sm name_validation req-Feild datepickercalender" id="dob" name="dob" placeholder="dd/mm/yyyy" maxlength="10" onkeypress="return checkdatecharacter(event);" onchange="calculateAge('dob');" onBlur="calculateAge('dob');" readonly required >
+						<span class="age_error_essage" style="color:red; font-weight:bold; display:none; font-size:12px;"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row INPUT_DIV_OTP">
+			<div class="col-md-6">		
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="ad_pass"><span class="req" title="required">*</span> Password:</label>
+					<div class="col-sm-6 col-md-6 col-xs-6"> 
+						<div class="col-sm-8 col-md-8 col-xs-8" style="margin:0px;padding:0px;">
+							<input type="password"   autocomplete="off"  onblur="checkPwd1();checkpassword_lawyer();" style="width:98%" class="form-control input-sm regExpForPassField name_validation req-Feild" id="ad_pass" name="ad_pass" placeholder="Enter password" maxlength="100" required>
+							<span class="password_check_error_msg_for_lawyer" style="color:red;font-weight:bold;display:none;"></span>
+						</div>
+						<div class="col-sm-4 col-md-4 col-xs-4" style="float:right;">
+							<a class="Password_Policy" style="cursor:pointer;">Password Policy</a>
+						 </div>
+					</div>
+				</div> 
+			</div> 
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="lawyer_confirm_pass"><span class="req" title="required">*</span> Confirm Password:</label>
+					<div class="col-sm-6"> 
+						<input type="password" onblur="checkpassword_lawyer();"  autocomplete="off" class="form-control regExpForPassField input-sm name_validation req-Feild" id="lawyer_confirm_pass" name="lawyer_confirm_pass" placeholder="Re-enter password" maxlength="100" required>
+						<span class="password_match_error_msg" style="color:red;font-weight:bold;display:none;"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row INPUT_DIV_OTP">
+			<div class="col-md-6">	
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="address"><span class="req" title="required">*</span> Address:</label>
+					<div class="col-sm-6 col-md-6 AddressDiv">
+						<input type="text"  onBlur="countRemainingCharacters('address');" onKeyup="countRemainingCharacters('address');" autocomplete="off" class="form-control input-sm name_validation req-Feild" id="address" name="address" maxlength="500" onkeypress="return addressValidation(event);" />
+					</div>
+					<div class="remaingCharacterDiv" style="float:right;"><span class="RemaingCharSpan" style="font-size:10px;color:red;text-align:center;">(Max 500 Characters)</span></div>
+				</div>
+			</div>
+			<div class="col-md-6">	
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="adv_state"><span class="req" title="required">*</span> State:</label>
+					<div class="col-sm-6 col-md-6">
+						<select onchange="getDistrict();" class="form-control input-sm req-Feild" id="adv_state" name="adv_state">
+							<option value="">-- Choose State --</option>
+						</select>
+					</div>
+				</div>	
+			</div>	
+		</div>
+		<div class="row INPUT_DIV_OTP">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="adv_district"><span class="req" title="required">*</span> District:</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control input-sm req-Feild" id="adv_district" name="adv_district"/>
+							<option value="">-- Choose District --</option>
+						</select>
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="adv_pincode"> PinCode:</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="text" class="form-control input-sm name_validation number_validation regExpForTextField" id="adv_pincode" name="adv_pincode" placeholder="Enter Pincode" maxlength="6" onBlur="checkpincode('adv_pincode')" onkeypress="return onlyNumbers(event);" autocomplete="off"/><span class="pincode_error_message_for_advocate" style="color:red;font-weight:bold;display:none;"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row DIV_ID_NUM_FILE" style="display:none;">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="id_type"><span class="req" title="required">*</span> <span class="LabelName">Photo ID Type:</span></label>
+					<div class="col-sm-6">
+						<select class="form-control input-sm req-Feild" id="id_type" name="id_type">
+							<option value="">Select</option>
+							<option value="1">Aadhar Card</option>
+							<option value="2">PAN Card</option>
+							<option value="3">Voter ID</option>
+							<option value="4">Offical ID</option>
+							<option value="5">Driving Licence</option>
+							<option value="6">Passport</option>
+							<option value="7">Other</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6 lblIDNum" for="id_num"><span class="req" title="required">*</span>Photo ID Number:</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="text" class="form-control input-sm" id="id_num" name="id_num" placeholder="Enter ID Number" maxlength="20" onkeyup="showphotoidmsg()" onkeypress="return isAlphaNumericCharater(event);" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row DIV_PHOTO_UPLOAD" style="display:none;">
+			<div class="col-md-6">			
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="id_img">
+						<span class="req" title="required">*</span>
+						Your Passport Size Photo:<br />
+						<font color="red">(Image size should be between 20KB and 100KB in JPEG or JPG format)<br />(Please do not upload image of ID)</font>
+					</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="file" name="id_photo" id="id_photo" class="form-control" accept="image/jpg, image/jpeg" onchange="checkImagePhotoFile();"/>
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-6">			
+				<div class="form-group">
+					<label class="control-label col-sm-12" id="photo_id_msg" style="display:none; color:red; text-align:justify !important;">
+						Please carry this Identity card with you as the same will be required to be shown on entry gate.
+					</label>
+				</div>	
+			</div>
+			<!--<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label col-sm-6" for="id_img">
+						<span class="req" title="required">*</span>
+						ID (<font color="red">IMAGE SIZE SHOULD BE BETWEEN 20KB
+						AND 100KB, IN JPEG OR JPG FORMAT</font>):
+					</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="file" name="id_upload" id="id_upload" class="form-control" accept="image/jpg, image/jpeg" onchange="checkImageIDFile();"/>
+					</div>
+				</div>	
+			</div>-->
+		</div>
+		<span class="all_error_message_lawyer_form" style="color:red; margin-top:15px;"></span> 
+		<div class="col-md-12 INPUT_DIV" style="margin-top:15px;"> 
+			<div class="col-sm-12 centered">
+				<input type="hidden" id="hdn_mobile" name="hdn_mobile"/>
+				<input type="hidden" id="hdn_email" name="hdn_email"/>
+				<input type="hidden" id="hdn_passtype" name="hdn_passtype"/>
+				<input type="hidden" id="csrftoken" name="csrftoken" value="<?php echo $_SESSION['lawyer']['CSRF_Token'];?>"/>
+				<a href="signup.php" class="btn btn-danger">Reset Form</a>
+				<button type="button" class="btn btn-primary" id="btnsendotp" onclick="return sendVeficationCode();">Send OTP</button>
+				<button type="button" class="btn btn-primary" id="btnsignup" name="signupBtnAdv" onclick="return advocate_signup_btn();" style="display:none;">Register</button>
+			</div>
+		</div>
+		<div class="row LITIGANTS_DIV" style="display:none;">
+			<div class="col-md-12">
+				<label class="text-center col-md-12" style="color:#1800de; font-size:17px;">eGate Pass for litigants has been temporarily suspended for the time being. Litigants who have been personally called by Hon’ble Court will be given entry on showing copy of orders.</label>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</form>
+</div>
+  
+<div id="success_modal_lawyer" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">		
+		<div class="modal-content modal-content col-md-6 col-md-offset-3">
+			<form class="form-horizontal">							
+				<div class="modal-body">
+					<br />
+					<div class="alert alert-success text-center" style="text-align:center;height:70px;">
+						<strong></strong> You are successfully Registered as <span id="lawyerNameText"></span>.
+						<label class="col-md-12 lblRegMsg"></label>
+						<label class="col-md-12 lblRegMsgNote" style="text-align:justify !important;"></label>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<a href="index.php" class="btn btn-primary" style="cursor:pointer;float:right">Continue</a>
+							<a href="signup.php" class="btn btn-primary" style="cursor:pointer;float:left" id="saveBtnLr" name="saveBtnLr">Close</a>
+						</div>
+					</div>
+					<div class="clearfix"></div>					
+				</div>
+			</form>
+        </div>	
+    </div>
+</div>  
+
+		
+<div class="modal fade showallerrormsg" role="dialog" style="top:15%;">
+	<div class="modal-dialog modal-lg">
+		<!-- Modal content-->
+		<div class="modal-content modal-content col-md-6 col-md-offset-3" >
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">&times;</a>
+				</div>
+				<div class="modal-body">
+					<label class="col-md-12"></label>
+					<div class="alert alert-danger alertMessage">
+						
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<button type="button" class="btn btn-primary" style="float:right" data-dismiss="modal">OK</button>
+						</div>
+					</div>	
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>
+
+<div id="verification_code_modal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content modal-content col-md-6 col-md-offset-3">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<a href="index.php" type="button" class="close" >&times;</a>
+					<h4 class="modal-title req text-center">MOBILE NUMBER VERIFICATION</h4>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-danger verification_code_error col-md-12" style="display:none">
+						<strong>Error!</strong> Fields with * Sign are  mandatory.
+					</div>
+					<div class="alert alert-success col-md-12 text-center">
+						<label class="countdown col-md-12 text-center" style="color:red;"></label><br/>
+						Verification code has been sent on your mobile number. Please enter the code below.
+					</div>
+					<div class="col-md-12 text-center">
+						<div class="form-group">
+							<div class="col-sm-6 col-md-offset-3">
+								<input type="text" class="form-control input-sm name_validation required_validation_for_verification_code" autocomplete="off"  id="verification_code" maxlength="8" placeholder="Enter Verification Code Here " required>
+								<span class="verification_code_error_text" style="color:red; font-weight:bold; display:none;"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12 text-center">
+						<div class="form-group">
+							<div class="col-sm-12 col-md-12 col-xs-12">
+								<button title="Submit Verification Code" type="button" class="btn btn-primary" style="cursor:pointer;margin-left:2%;" onclick="return submit_verification_code();"><i class="fa fa-save"></i> SUBMIT</button>
+								<button title="Resend Verification Code" type="button" class="btn btnresendotp btn-info" style="cursor:pointer; display:none; margin-left:2%;" onclick="return sendVeficationCode();"><i class="fa fa fa-paper-plane"></i>&nbsp;RESEND CODE</button>
+								<a href="signup.php" title="Cancle"  class="btn btn-danger"  style="cursor:pointer;margin-left:2%;"><i class="fa fa-times-circle-o" aria-hidden="true"></i>&nbsp;Close</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>
+
+<div id="Password_Policy_Model" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content modal-content col-md-12" style="top:20%;">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title req text-center">Password Policy</h4>
+				</div>
+				<div class="modal-body">
+					<br />
+					<ul style="list-style-type:none">
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; Password Length must be greater than equal to 8  and less than 16.</li>
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; Password must use a combination of Atleast 1 Lower case letters (a – z).</li>
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; Password must use a combination of Atleast 1 upper case letters (A – Z).</li>
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; Password must use a combination of Atleast 1 number (0 – 9).</li>
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; Must use a combination of At least one Special Characters: like (# $ % & ( ) * +  , - . / : ; < = > ? @ [ \ ]).</li>
+						<li style="padding:5px;"><i class="glyphicon glyphicon-hand-right"></i> &nbsp; &nbsp; <strong>Please note down your password to login in future.</strong> </li>
+					</ul>
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<button type="button" class="btn btn-primary" style="float:right" data-dismiss="modal">OK</button>
+						</div>
+					</div>	
+				</div>
+			</form>
+        </div>	
+    </div>
+</div>
+<input type="hidden" id="userid_assign_user"/>
+<script type="text/javascript">
+var ajaxEnroll=0; var ajaxEmail=0; ajaxMob=0;
+$(document).ready(function(){
+	$('.INPUT_DIV').each(function(){
+		$(this).hide();
+	});
+	$('.INPUT_DIV_OTP').each(function(){
+		$(this).hide();
+	});
+	$('#btnsendotp').show();
+	$('#btnsignup').hide();
+
+	getStates();
+	checkPwd1 = function () {
+		var regularExpression  = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+		var str = document.getElementById('ad_pass').value;
+		if(str!="" && str!=null){
+			$('.password_check_error_msg_for_lawyer').show();
+			if (str.length < 8) {
+			 
+				$('.password_check_error_msg_for_lawyer').text("Password length should be atleast 8 characters");
+				return ("too_short");
+			}
+			else if (str.length > 16) {
+			   $('.password_check_error_msg_for_lawyer').text("Password length should be less than or equal to 16 characters");
+				return ("too_long");
+			} 
+			else if(!regularExpression.test(str)) {
+			 $('.password_check_error_msg_for_lawyer').text("password should contain atleast one Upper Case Letter, one Lower Case Letter, one Number and one Special character");
+				return ("bad_char");
+			}
+		}
+		$('.password_check_error_msg_for_lawyer').text("");
+		return ("ok");
+	}
+});
+
+function checkpassword_lawyer(){
+	if($('#lawyer_confirm_pass').val() != ""){
+		if ($('#lawyer_confirm_pass').val() == $('#ad_pass').val()){
+		   $('.password_match_error_msg').text('');
+		} 
+		else{ 
+			$('.password_match_error_msg').text('Password Mismatched');
+			$('.password_match_error_msg').show();
+		}
+	}
+}
+</script>
+
+<script>
+$(document).ready(function(){
+	$('.email_check').blur(function(){
+		var email_val=$(this).val();
+		$('.all_error_message_lawyer_form').text('');
+		if(email_val){
+			if($.trim($('#hdn_email').val()) != ''){
+				email_val = $.trim($('#hdn_email').val());
+			}
+			$('.loading').show();
+			ajaxEmail=0;
+			var csrf = $.trim($('#csrftoken').val());
+			var data = 'email_val='+btoa(email_val)+'&csrftoken='+csrf+'&QueryType=check_emailid';
+			$.ajax({
+				type:"POST",
+				cache:false,
+				url:"ajax-responce.php",
+				data:data,  
+				success: function (html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == "Yes"){
+						ajaxEmail=1;
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');
+						$('.email_check_error').text('Email Address Already Exists').show();
+					}
+					else if(dataArr[0] == "CSRF"){
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');
+						$('.email_check_error').text('Authentication Failed').show();
+					}
+					else if(dataArr[0] == "IVI"){
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');
+						$('.email_check_error').text('Invalid Email Address').show();
+					}
+					else if(dataArr[0] == "OK"){
+						$('.email_check_error').text(" ").hide();
+					}
+					else{
+						$('.email_check_error').text("Error occured. Please check your internet connection.").hide();
+					}
+					$('.loading').hide();
+				}
+			}); 
+		}
+		else{
+			$('.email_check_error').text(" ").hide();
+		}
+	});
+});
+</script>
+
+<script>
+
+$(document).ready(function(){
+	$('.contact_number_check').blur(function(){
+		var mobile= '';
+		if($('.passtype:checked').val() == '3'){
+			mobile=$(this).val();
+		}
+		else{
+			mobile=$('#hdn_mobile').val();
+		}
+		$('.all_error_message_lawyer_form').text('');
+		if(mobile){
+			ajaxMob=0;
+			var csrf = $.trim($('#csrftoken').val());
+			
+			$('.loading').show();
+			var data = 'mobile='+btoa(mobile)+'&csrftoken='+csrf+'&QueryType=check_mobileno';
+			$.ajax({
+				type:"POST",
+				cache:false,
+				url:"ajax-responce.php",
+				data:data,  
+				success: function (html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == "Yes"){
+						ajaxMob=1;
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');
+						$('.mobile_number_check_error').text('Mobile Number Already Exists').show();
+					}
+					else if(dataArr[0] == "IVI"){
+						$('.mobile_number_check_error_1').text('Invalid Mobile Number').show();
+					}
+					else if(dataArr[0] == "OK"){
+						$('.mobile_number_check_error').text(" ").hide();
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('.mobile_number_check_error').text("Authentication failed.").show();
+					}
+					else{
+						$('.mobile_number_check_error').text("Error occured. Please check your internet connection.").hide();
+					}
+					$('.loading').hide();
+				}
+			});   
+		}
+		else{
+			$('.mobile_number_check_error').text('').hide();
+		}
+	});
+});
+</script>
+
+<script>
+$(document).ready(function(){
+	$('#lawyer_enroll_text').keyup(function(){
+		this.value = this.value.toUpperCase();
+	});
+
+	$('.enroll_number_check').blur(function(){
+		$('.all_error_message_lawyer_form').text('').hide();
+		var enroll 	= $.trim($('#ad_enroll_no').val());
+		var passtype= $.trim($('.passtype:checked').val());
+		$('.all_error_message_lawyer_form').text('');
+		$('#adv_code').val('');
+		$('#ad_name').val('');
+		$('#hdn_mobile').val('');
+		$('#hdn_email').val('');
+		$('#ad_email').val('');
+		$('#ad_mobile_no').val('');
+		
+		if(passtype == '1'){
+			enroll = enroll+'SR';
+		}
+		$('#ad_email').prop('readonly', false);
+		
+		if(enroll!=""){
+			ajaxEnroll=0;
+			var csrf = $.trim($('#csrftoken').val());
+			
+			$('.loading').show();
+			var data = 'enroll='+btoa(enroll)+'&passtype='+btoa(passtype)+'&csrftoken='+csrf+'&QueryType=check_enroll';
+			$.ajax({
+				type:"POST",
+				cache:false,
+				url:"ajax-responce.php",
+				data:data,  
+				success: function(html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == "Yes"){
+						ajaxEnroll=1;
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');
+						
+						var dataRes = dataArr[2].split('@@');
+						$('#adv_code').val(dataRes[1]);
+						$('#ad_name').val(dataRes[0]);
+						$('#hdn_mobile').val(dataRes[2]);
+						$('#ad_mobile_no').val(dataRes[4]);
+						$('#hdn_email').val(dataRes[3]);
+						$('#ad_email').val(dataRes[5]);
+						
+						if($.trim(dataRes[3]) != '' && $.trim(dataRes[5]) != ''){
+							$('#ad_email').prop('readonly', true);
+						}
+						
+						$('.all_error_message_lawyer_form').text('If updation of Mobile Number and Email Address in High Court database is required, learned Advocate may send mail on advocatejpr.update@hcraj.nic.in along with copy of Bar Council Enrollment Certificate or Bar Association Identity Card having Bar Council Enrollment Number.').show();
+					}
+					else if(dataArr[0] == "NA") {
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');						
+						$('.enroll_number_check_error').text('Either this enrollment number is not registered in CIS or it has already signed up on this portal.').show();
+						$('.all_error_message_lawyer_form').text('If name is not registered in High Court database, then learned Advocate may send mail on advocatejpr.update@hcraj.nic.in along with copy of Bar Council Enrollment Certificate or Bar Association Identity Card having Bar Council Enrollment Number.').show();
+					}
+					else if(dataArr[0] == "IVI") {
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');						
+						$('.enroll_number_check_error').text('Invalid Enrollment Number').show();
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');	
+						$('.enroll_number_check_error').text("Authentication failed.").show();
+					}
+					else {
+						$('#ad_pass').val('');
+						$('#lawyer_confirm_pass').val('');	
+						$('.enroll_number_check_error').text("Error occured.").hide();
+					}
+					$('.loading').hide();
+				}
+			});
+		}
+		else {
+			$('.enroll_number_check_error').text("").hide();
+		}
+	});
+});
+</script>
+
+<script>
+	$(document).ready(function(){
+		$(document).on('click', '.Password_Policy', function(){
+			$('#Password_Policy_Model').modal('show');
+		})
+	});
+</script>
+
+<script>
+	function checkpincode(id){
+		var pincodeValue = $('#'+id).val();
+		if(id=='adv_pincode'){
+			if(pincodeValue != "" && pincodeValue.length != 6){
+				$('.pincode_error_message_for_advocate').text('Invalid Pincode').show();
+			}
+			else{
+				$('.pincode_error_message_for_advocate').text('').show();
+			}
+		}
+	}
+</script>
+
+  <script type="text/javascript">
+	function sendVeficationCode(){
+		var enroll_check_val			= $('.enroll_number_check_error').text();
+		var email_check_val				= $('.email_check_error').text();
+		var mobile_check_val			= $('.mobile_number_check_error').text();
+		var mobile_check_val_1			= $('.mobile_number_check_error_1').text();
+		
+		$('#btnsendotp').show();
+		$('#btnsignup').hide();
+		
+		if(($('.passtype:checked').val() == 3 && ($.trim($('#party_name').val()) == '' || $('.estttype').is(':checked') == false)) || $.trim($('#ad_email').val()) == '' || $.trim($('#ad_mobile_no').val()) == ''){
+			$('.alertMessage').html('Please fill all mandatory information.');
+			$('.showallerrormsg').modal('show');
+			return false;
+		}
+		else if(email_check_val=="Email Address Already Exists"){
+			$('.alertMessage').html('Please Check Email Address Already Exists.');
+			$('.showallerrormsg').modal('show');
+			return false;
+		}
+		else if(mobile_check_val=="Mobile Number Already Exists"){
+			$('.alertMessage').html('Please Check Mobile Number Already Exists.');
+			$('.showallerrormsg').modal('show');
+			return false;
+		}
+		else if(mobile_check_val_1=="Invalid Mobile Number"){
+			$('.alertMessage').html('Please check Invalid Mobile Number.');
+			$('.showallerrormsg').modal('show');
+			return false;
+		}
+		else{
+			var mobile = '';
+			if($('.passtype:checked').val() == 3){
+				mobile = $.trim($('#ad_mobile_no').val());
+			}
+			else {
+				mobile = $.trim($('#hdn_mobile').val());
+			}
+			var csrf = $.trim($('#csrftoken').val());
+			$('.form_blank_error_message').hide();
+			$('.loading').show();
+			$.ajax({
+				type:"POST",
+				cache:false,
+				url:"ajax-responce.php",
+				data:"mobile="+btoa(mobile)+"&csrftoken="+csrf+"&QueryType=sendVarCode",
+				success: function (html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == 'Yes'){
+						$('.all_error_message_lawyer_form').text('').hide();
+						timer2 = "02:59";
+						var interval = setInterval(function() {
+							var timer = timer2.split(':');
+
+							//by parsing integer, I avoid all extra string processing
+							var minutes = parseInt(timer[0], 10);
+							var seconds = parseInt(timer[1], 10);
+							--seconds;
+							minutes = (seconds < 0) ? --minutes : minutes;
+							if (minutes < 0) clearInterval(interval);
+							seconds = (seconds < 0) ? 59 : seconds;
+							seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+							if(parseInt(minutes) < 0 || (parseInt(minutes) == 0 && parseInt(seconds) == 0)){
+								$('.btnresendotp').show();
+								$('.countdown').html('Previous OTP has expired. Please resend.');
+							}
+							else{
+								$('.countdown').html('OTP valid upto: '+minutes + ':' + seconds);
+							}
+							timer2 = minutes + ':' + seconds;
+						}, 1000);
+						
+						$('#hiddenUserId').val($.trim($('ad_enroll_no').val()));
+						
+						$("#verification_code_modal").modal({
+							backdrop: 'static',
+							keyboard: false
+						});
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('.verification_code_error_text').text("Authentication failed.").show();
+					}
+					else{
+						$('.verification_code_error_text').text("Incorrect Verification Code").show();
+					}
+					$('.loading').hide();
+				}
+			});
+		}
+	}
+	
+	function submit_verification_code(){
+		var check_required_field='';
+		var hiddenUserIdVal = $('#hiddenUserId').val();
+		var vericationCode = $('#verification_code').val();
+		$('.verification_code_error_text').text(" ").hide();
+		
+		$(".req-Feild-verf").each(function(){
+			var val22 = $(this).val();
+			if (!val22){
+				check_required_field ='form-error';
+				$(this).css("border-color","#ccc");
+				$(this).css("border-color","red");
+				$('.verification_code_error').show();
+			} 
+			$(this).on('keypress change',function(){
+					$(this).css("border-color","#ccc");
+					$('.verification_code_error').hide();
+				});
+			});
+			
+			if(check_required_field){ 
+				return false;
+			}  
+			else{
+				var csrf = $.trim($('#csrftoken').val());
+				
+				var mobile = '';
+				if($('.passtype:checked').val() == 3){
+					mobile = $.trim($('#ad_mobile_no').val());
+				}
+				else {
+					mobile = $.trim($('#hdn_mobile').val());
+				}
+				
+				$('#loading').show();
+				var post_data = "mobile="+btoa(mobile)+"&vericationCode="+btoa(vericationCode)+"&csrftoken="+csrf+"&QueryType=checkVerificationCode";
+				$.ajax({
+					type:"POST",
+					cache:false,
+					url:"ajax-responce.php",
+					data:post_data,    
+					success: function (html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == 'Yes'){
+						$('#verification_code_modal').modal('hide');
+						var userid = '';
+						if($('.passtype:checked').val() == 1){
+							$('.DIV_ID_NUM_FILE').hide();
+							$('.DIV_PHOTO_UPLOAD').hide();
+							$('#ad_enroll_no').prop('readonly', true);
+							userid = $('#ad_enroll_no').val()+'SR';
+							$('#lawyerNameText').text('Sr. Advocate');
+						}
+						else if($('.passtype:checked').val() == 2){
+							$('.DIV_ID_NUM_FILE').hide();
+							$('.DIV_PHOTO_UPLOAD').hide();
+							$('#ad_enroll_no').prop('readonly', true);
+							userid = $('#ad_enroll_no').val();
+							$('#lawyerNameText').text('Advocate');
+						}
+						else if($('.passtype:checked').val() == 3){
+							$('.DIV_ID_NUM_FILE').show();
+							$('.DIV_PHOTO_UPLOAD').show();
+							$('#party_name').prop('readonly', true);
+							userid = $('#ad_mobile_no').val();
+							$('#lawyerNameText').text('Party in Person');
+							$('#hdn_mobile').val($.trim($('#ad_mobile_no').val()));
+						}
+						$('#ad_mobile_no').prop('readonly', true);
+						$('#ad_email').prop('readonly', true);
+						
+						$('.passtype').each(function(){
+							$(this).prop('disabled', true);
+						});
+						
+						if($.trim($('#hdn_email').val()) == ''){
+							$('#hdn_email').val($.trim($('#ad_email').val()));
+						}
+						$('#hdn_passtype').val($('.passtype:checked').val());
+						
+						$('#userid_assign_user').val(userid);
+						$('#btnsendotp').hide();
+						$('#btnsignup').show();
+						$('.INPUT_DIV_OTP').each(function(){
+							$(this).show();
+						});
+					}
+					else if(dataArr[0] == 'OTP'){
+						$('.verification_code_error_text').text("Previous OTP has expired. Please resend.").show();
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('.verification_code_error_text').text("Authentication failed try again.").show();
+					}
+					else{
+						$('.verification_code_error_text').text("Incorrect Verification Code").show();
+					}
+					$('#loading').hide();
+				}
+			});
+		}
+	}
+	
+	function advocate_signup_btn(){		
+		var check_required_field = '';	
+		var chkVal = $('.passtype:checked').val();
+		
+		$(".req-Feild").each(function(){
+			var val22 = $(this).val();
+			if (!val22){
+				check_required_field ='form-error';
+				$(this).css("border-color","#ccc");
+				$(this).css("border-color","red");
+				$('.form_blank_error_message').show();
+			} 
+			$(this).on('keypress change',function(){
+				$(this).css("border-color","#ccc");
+				$('.all_error_message_lawyer_form').text('');
+			});
+		});
+		 
+		if(check_required_field){ 
+			return false;
+		}  
+		else{
+			checkpincode('adv_pincode');
+			calculateAge('dob');
+			checkPwd1();
+			checkpassword_lawyer();
+			
+			var enroll_check_val			= $('.enroll_number_check_error').text();
+			var email_check_val				= $('.email_check_error').text();
+			var mobile_check_val			= $('.mobile_number_check_error').text();
+			var mobile_check_val_1			= $('.mobile_number_check_error_1').text();
+			var password_error_msg			= $('.password_match_error_msg').text(); 
+			var password_check_message		= $('.password_check_error_msg_for_lawyer').text();
+			var all_error_message_advocate 	= $('.all_error_message_lawyer_form').text();
+			var pincode_error 				= $('.pincode_error_message_for_advocate').text();
+			var age_error_essage = $('.age_error_essage').text();
+			
+			if(chkVal == '3'){
+				/* if($("#id_upload").val() != ''){
+					if($("#id_upload")[0].files[0].size > 102400 || $("#id_upload")[0].files[0].size < 20480){
+						$('.alertMessage').html('Please make sure your ID image size between Max 100KB and Min 20KB.');
+						$('.showallerrormsg').modal('show');
+						return false;
+					}
+				} */
+
+				if($("#id_photo").val() != ''){
+					if($("#id_photo")[0].files[0].size > 102400 || $("#id_photo")[0].files[0].size < 20480){
+						$('.alertMessage').html('Please make sure your photo size between Max 100KB and Min 20KB.');
+						$('.showallerrormsg').modal('show');
+						return false;
+					}
+				}
+			}
+
+			if(password_error_msg=='Password Mismatched'){
+				$('.alertMessage').html('Please check Password Mismatched.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(pincode_error=='Invalid Pincode'){
+				$('.alertMessage').html('Please check Invalid Pincode.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if($('.passtype:checked').val() == 3 && $('.estttype').is(':checked') == false){
+				$('.alertMessage').html('Please select Establishment.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(password_check_message){
+				$('.alertMessage').html('Please check password error message.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(age_error_essage){
+				$('.alertMessage').html('Please check error message.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(email_check_val=="Email Address Already Exists"){
+				$('.alertMessage').html('Please Check Email Address Already Exists.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(mobile_check_val=="Mobile Number Already Exists"){
+				$('.alertMessage').html('Please Check Mobile Number Already Exists.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(mobile_check_val_1=="Invalid Mobile Number"){
+				$('.alertMessage').html('Please check Invalid Mobile Number.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(enroll_check_val && chkVal != '3'){
+				$('.alertMessage').html('Please check error message.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else if(all_error_message_advocate){
+				$('.alertMessage').html('Please check error message.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			/* else if(chkVal == '3' && $("#id_upload").val() != '' && checkImageIDFile() == false){
+				$('.alertMessage').html('Please make sure your ID image is in jpg format.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			} */
+			else if(chkVal == '3' && $("#id_photo").val() != '' && checkImagePhotoFile() == false){
+				$('.alertMessage').html('Please make sure your Photo image is in jpg format.');
+				$('.showallerrormsg').modal('show');
+				return false;
+			}
+			else{
+				$("#ad_pass").val(SHA_256($("#ad_pass").val()));
+				$("#lawyer_confirm_pass").val(SHA_256($("#lawyer_confirm_pass").val()));
+
+				var chkVal = $('.passtype:checked').val();
+				
+				var postdata = new FormData();
+				if(chkVal == '3'){
+					//postdata.append('id_upload', $('#id_upload').prop('files')[0]);
+					postdata.append('id_photo', $('#id_photo').prop('files')[0]);
+				}
+				postdata.append('csrf', $('#csrftoken').val());
+				postdata.append('QueryType', 'insert_advocate_data');
+
+				var other_data = $('#advocateForm').serializeArray();
+				$.each(other_data, function(key,input){
+					postdata.append(input.name, input.value);
+				});
+
+				$.ajax({
+					type:"POST",
+					evalScripts: true,
+					cache:false,
+					contentType: false,
+					processData: false,
+					url:"ajax-responce.php",
+					data:postdata,
+					enctype: 'multipart/form-data',
+					success: function (html) {
+						trim_data=$.trim(html);
+						var splitData = trim_data.split('##');
+						$('#csrftoken').val(splitData[1]);
+						
+						if(splitData[0]=="Ok"){
+							$('#advocateForm').trigger('reset');
+							if(chkVal == '3'){
+								$('.lblRegMsg').html('<b>Your Mobile Number '+$('#userid_assign_user').val()+'</b> will be your Login Id</b>');
+								$('.lblRegMsgNote').html('<br/><br/>Note :- You can only login after apporval of Admininstration of Rajasthan High Court. You will be notified accordingly.');
+							}
+							else{
+								$('.lblRegMsg').html('<b>Your Enrollment Number '+$('#userid_assign_user').val()+'</b> will be your Login Id</b>');
+								$('.lblRegMsgNote').html('');
+							}
+							$("#success_modal_lawyer").modal({
+								backdrop: 'static',
+								keyboard: false
+							});
+						}
+						else if(splitData[0] == 'CSRF'){
+							$('.alertMessage').html('Authentication failed !!.');
+							$('.showallerrormsg').modal('show');
+						}
+						else if(splitData[0] == 'NVIMG' && splitData[2] == 'PHOTO'){
+							$('.alertMessage').html('Invalid Candidate Photo !!.');
+							$('.showallerrormsg').modal('show');
+						}
+						else if(splitData[0] == 'IMGSIZE' && splitData[2] == 'PHOTO'){
+							$('.alertMessage').html('Invalid Candidate Photo size !!.');
+							$('.showallerrormsg').modal('show');
+						}
+						else if(splitData[0] == 'NVIMG' && splitData[2] == 'ID'){
+							$('.alertMessage').html('Invalid Candidate ID !!.');
+							$('.showallerrormsg').modal('show');
+						}
+						else if(splitData[0] == 'IMGSIZE' && splitData[2] == 'ID'){
+							$('.alertMessage').html('Invalid Candidate ID photo size !!.');
+							$('.showallerrormsg').modal('show');
+						}
+						else if(splitData[0]=="enroll_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.enroll_number_check_error').text('Enrollment number already registered with'+splitData[2]).show();
+						}
+						else if(splitData[0] == "enroll_not_valid_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.enroll_number_check_error').text('Invalid Enrollment Number').show();
+						}
+						else if(splitData[0] == "contact_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.mobile_number_check_error').text('Mobile Number Already Exists').show();
+						}
+						else if(splitData[0] == "phone_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Invalid Mobile Number').show();
+						}
+						else if(splitData[0]=="number_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Mobile Number Must Be Numeric.').show();
+						}
+						else if(splitData[0] == "number_error_pincode"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Pincode Must Be Numeric.').show();
+						}
+						else if(splitData[0]=="numeric_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Invalid Enrollment Number.').show();
+						}
+						else if(splitData[0]=="email_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.email_check_error').text('Email Address Already Exists').show();
+						}
+						else if(splitData[0]=="input_error"){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Invalid input fields value').show();
+						}
+						else if(splitData[0]=='age_error'){
+							$('#ad_pass').val('');
+							$('#lawyer_confirm_pass').val('');
+							$('.all_error_message_lawyer_form').text('Age should be greater than or equal to 18').show();
+						}
+						else{
+							$('.all_error_message_lawyer_form').text('').hide();
+						}
+						$('#loading').hide();
+					}
+				});
+			}
+		}
+	}
+</script>
+ 
+<script>  
+function mobileNumber(){
+	var Number = document.getElementById('ad_mobile_no').value;			 
+	var IndNum = /^[0]?[6789]\d{9}$/;
+	if(!IndNum.test(Number) && Number != ""){
+		$('.mobile_number_check_error_1').show();
+		$('.mobile_number_check_error_1').text("Invalid Mobile Number").show();
+		return false;
+	}			 
+	else{		
+		$('.mobile_number_check_error_1').hide();
+		$('.mobile_number_check_error_1').text("");
+		return true;
+	}
+}
+</script>
+
+ <script type="text/javascript">   
+   function countRemainingCharacters(idName){
+		var left = 500 - $('#'+idName).val().length;
+		if (left < 0){
+			left = 0;
+		}
+		$('#'+idName).parent('.AddressDiv').siblings('.remaingCharacterDiv').children('.RemaingCharSpan').text('( Characters left: ' + left+" )").css('font-size','10px');
+		$('#'+idName).siblings('.RemaingCharSpan').text('Characters left: ' + left);
+	}
+		
+	function calculateAge(id){
+		var dob = $('#'+id).val();
+		var splitDate = dob.split('/');
+		dob = splitDate[1]+'/'+splitDate[0]+'/'+splitDate[2];
+		if(dob){
+			dob = new Date(dob);
+			var today = new Date();
+			var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+			if(id=='dob'){
+				var className = 'age_error_essage';
+			}
+			else if(id=='let_dob'){
+				var className = 'age_error_essage_let';
+			}
+			
+			if(age<18){
+				$('.'+className).text('Age should be greater than or equal to 18').show();
+			}
+			else{
+				$('.'+className).text('').hide();
+			}
+		}
+	}
+</script>
+<script>
+$(document).ready(function(){
+	$(".datepickercalender").datepicker({
+		format: 'dd/mm/yyyy',
+		startDate: '01/01/1900',
+		endDate: 'today',
+		autoclose: true
+	});
+
+	$('#ad_enroll_no').keypress(function (e) {
+		var regex = new RegExp("^[a-zA-Z0-9()-]+$");
+		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if (regex.test(str)){
+			return true;
+		}
+		e.preventDefault();
+		return false;
+	});
+	
+	$('#ad_enroll_no').blur(function(e){
+		validateEnrollmentNumber($(this).val());
+	});
+	$('#ad_enroll_no').keyup(function(e){
+		validateEnrollmentNumber($(this).val());
+	});
+});
+function validateEnrollmentNumber(str){
+	if(str!=""){
+		if(str.match(/^(?=.*\d)(?=.*[a-zA-Z()-])[a-zA-Z]{1}.{2,16}$/)){
+			$('.enroll_number_check_error').text('').hide();
+		}
+		else{
+			$('.enroll_number_check_error').text('Only Numbers and Only Special Characters Not Allowed').show();
+		}
+	}
+}
+</script>
+<script type="text/javascript">
+function getStates(){
+	$('#adv_state').html("<option value=''> Select State</option>");
+	var csrf = $('#csrftoken').val();
+	$.ajax({
+		type:"POST",
+		cache:false,
+		url:"ajax-responce.php",
+		dataType:"JSON",
+		data:'csrftoken='+csrf+'&QueryType=StateList',  
+		success: function (data) {
+			var csrf 	= data[0]['csrf'];
+			var status 	= data[0]['status'];
+			$('#csrftoken').val(csrf);
+			
+			if(status == 'OK' && data.length > 1){
+				for(var i=1; i<data.length; i++){
+					$('#adv_state').append("<option value='"+data[i]['id']+"'>"+data[i]['state_name']+"</option>");
+				}
+				$('#adv_state').val('28');
+				setTimeout(function(){
+					getDistrict();
+				}, 500);
+			}
+			else if(status == 'CSRF'){
+				$('.all_error_message_lawyer_form').text('Authentication failed. Please refresh page again.').show();
+			}
+			else{
+			}
+		}
+	});
+}
+
+function getDistrict(){
+	var stateVal=$('#adv_state').val();
+	$('#adv_district').html("<option value=''>Select District</option>");
+	if(stateVal != ""){
+		var csrf = $('#csrftoken').val();
+		$('.loading').show();
+		$.ajax({
+			type:"POST",
+			cache:false,
+			url:"ajax-responce.php",
+			dataType:"JSON",
+			data:'stateval='+btoa(stateVal)+'&csrftoken='+csrf+'&QueryType=DistrictList',  
+			success: function (data) {
+				var csrf   = data[0]['csrf'];
+				var status = data[0]['status'];
+				$('#csrftoken').val(csrf);
+				
+				if(status == 'OK' && data.length > 1){
+					for(var i=1; i<data.length; i++){
+						$('#adv_district').append("<option value='"+data[i]['id']+"'>"+data[i]['district_name']+"</option>");
+					}
+				}
+				else if(status == 'CSRF'){
+					$('.all_error_message_lawyer_form').text('Authentication failed. Please try again.').show();
+				}
+				$('.loading').hide();
+			}
+		});
+	}
+}
+$("input[type='text']").tooltip({
+	position: {
+		my: "left center",
+		at: "right center",
+		using: function( position, feedback ) {
+			$(this).css( position );
+			$('<div>').addClass('arrow').addClass(feedback.vertical).addClass(feedback.horizontal).appendTo(this);
+		}
+	}
+});
+
+function chkPassType(){
+	var chkVal = $('.passtype:checked').val();
+
+	$('.INPUT_DIV').each(function(){
+		$(this).show();
+	});
+	
+	$('#ad_enroll_no').val('');
+	$('#ad_mobile_no').val('');
+	$('#ad_name').val('');
+	$('#party_name').val('');
+	$('#ad_email').val('');
+		
+	if(chkVal == 3){
+		$('.DIV_LITIGANTS').show();
+		$('.DIV_ADV_ENROLL').hide();
+		$('#ad_mobile_no').prop('readonly', false);
+		$('#ad_enroll_no').removeClass('req-Feild');
+		$('#ad_name').removeClass('req-Feild');
+		$('#party_name').addClass('req-Feild');
+		$('#id_type').addClass('req-Feild');
+		$('#id_num').addClass('req-Feild');
+		//$('#id_upload').addClass('req-Feild');
+		$('#id_photo').addClass('req-Feild');
+	}
+	else {
+		$('.DIV_LITIGANTS').hide();
+		$('.DIV_ADV_ENROLL').show();
+		$('#ad_mobile_no').prop('readonly', true);
+		$('#ad_enroll_no').addClass('req-Feild');
+		$('#ad_name').addClass('req-Feild');
+		$('#party_name').removeClass('req-Feild');
+		$('#id_type').removeClass('req-Feild');
+		$('#id_num').removeClass('req-Feild');
+		//$('#id_upload').removeClass('req-Feild');
+		$('#id_photo').removeClass('req-Feild');
+	}
+
+	if(chkVal == 1){
+		$('.SR_ADV_TXT').show();
+		$('.input-group').css('display', 'table');
+		$('#ad_enroll_no').attr('data-toggle', "tooltip");
+		$('#ad_enroll_no').attr('data-original-title', "Please don't enter Sr. inside enrollment number");
+	}
+	else{
+		$('.SR_ADV_TXT').hide();
+		$('.input-group').css('display', 'block');
+		$('#ad_enroll_no').attr('data-toggle', "");
+		$('#ad_enroll_no').attr('data-original-title', "");
+	}
+	$('[data-toggle="tooltip"]').tooltip();
+}
+
+function checkImageIDFile() {
+    var node_list = document.getElementById('id_upload').value;
+    var sFileExtension = node_list.split('.')[node_list.split('.').length - 1];
+	
+    if (sFileExtension != "jpg" && sFileExtension != "JPG" && sFileExtension != "jpeg") {
+		$('.alertMessage').html('Please make sure your ID image is in jpg format.');
+		$('.showallerrormsg').modal('show');
+        return false;
+    }
+}
+
+function checkImagePhotoFile() {
+    var node_list = document.getElementById('id_photo').value;
+    var sFileExtension = node_list.split('.')[node_list.split('.').length - 1];
+	
+    if (sFileExtension != "jpg" && sFileExtension != "JPG" && sFileExtension != "jpeg") {
+		$('.alertMessage').html('Please make sure your Photo image is in jpg format.');
+		$('.showallerrormsg').modal('show');
+        return false;
+    }
+}
+
+function showphotoidmsg(){
+	$('#photo_id_msg').show();
+}
+
+$('#id_type').on('change', function(){
+	var val = $('#id_type :selected').text();
+	$('.lblIDNum').text('Photo '+val+' Number');
+});
+</script>
+
+<br /><br />
+<?php include 'footer.php';?>

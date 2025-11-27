@@ -1,0 +1,1233 @@
+<?php
+	include 'urlConfig.php';
+	if(!isset($_SESSION['lawyer']['user_id']) || $_SESSION['lawyer']['user_id'] == ""){
+		header("Location:".$base_url.'my-logout.php');
+	}
+	
+	if(isset($_SESSION['lawyer']['user_id']) && $_SESSION['lawyer']['user_id'] != "" && $_SESSION['lawyer']['role_id'] != '2')
+	{
+		header("Location:".$base_url.'adv-admin');
+	}
+	
+	/***************** CHECK SESSION *****************/
+	if($_SESSION['lawyer']['sessionid'] != session_id()){
+		header("Location:".$base_url.'my-logout.php');
+	}
+	/***************** CHECK SESSION *****************/
+
+	$mobile = $_SESSION['lawyer']['mobile'];
+	$mobileno = substr($mobile, 0, 2);
+	$mobileno .= "******";
+	$mobileno .= substr($mobile, 8, 2);
+	
+	$csrftoken= md5(uniqid());
+	$_SESSION['lawyer']['CSRF_Token'] = $csrftoken;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>RHC Generate Pass | Jaipur</title>		 	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="noindex, nofollow">      
+	<meta http-equiv="cache-control" content="max-age=0" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="expires" content="Mon, 01 Jan 1990 00:00:00 GMT">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">        
+	<meta http-equiv="cache-control" content="private" />
+	<meta http-equiv="cache-control" content="pre-check=0" />
+	<meta http-equiv="cache-control" content="post-check=0" />
+	<meta http-equiv="cache-control" content="must-revalidate" />
+	<meta http-equiv="content-language" content="en">
+	<meta name="robots" content="DISALLOW">
+	<meta name="revisit-after" content="1 day">
+	<meta http-equiv="content-script-type" content="text/javascript">
+	<meta http-equiv="content-language" content="en">
+	<meta name="robots" content="DISALLOW">
+	<meta name="revisit-after" content="1 day">
+	<meta http-equiv="content-script-type" content="text/javascript">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="RHC, RHCB, Lawyer, Cause list, index, home page, login page, Rajasthan High Court, RHCB Website, Rajsthan Govt" />
+	<meta name="description" content="A cluster of Princely States with an oasis known as Ajmer-Merwara, a British India Territory, was given geographical expression as Rajputana. These Twenty and odd Rajputana States before 20th Century AD were dynastic and the Rulers were the fountain head of all Executive, Legislative and Judicial Authority in the States. As soon as the country got freedom from British Imperialism, the process of integration of the princely States to form bigger units was initiated." />
+	<meta http-equiv="Content-Security-Policy">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8; X-Content-Type-Options=nosniff" />
+	<script type="application/x-javascript"> 
+		addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+		function hideURLbar(){ window.scrollTo(0,1); } 
+	</script>
+	
+	<link rel="shortcut icon" href="images/national-emblem-india.PNG">
+	
+	<link rel="stylesheet" href="includes/libs/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="includes/libs/bootstrap/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="includes/css/style.css">
+	<link rel="stylesheet" href="includes/css/stylesheet1.css">
+	<link rel="stylesheet" type="text/css" href="includes/css/datepicker3.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-timepicker.min.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/css/loader.css"/>
+	<link href="includes/css/sweetalert.css" rel="stylesheet" type="text/css"/>
+	
+	<script type="text/javascript" src="includes/js/SHA256.js"></script>
+	<script type="text/javascript" src="includes/js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="includes/js/moment.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/transition.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/collapse.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="includes/libs/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="includes/js/validation_file.js?random=<?php echo rand(0001, 9999);?>"></script>
+	<script type="text/javascript" src="includes/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="includes/js/sweetalert.min.js"></script>
+	
+	<style>
+		th, td {
+			padding: 3px;
+			text-align: center;
+		}
+		
+		.table-hover tbody tr:hover td {
+			background: #4dffff;
+		}
+		
+		#partyDetailsTab {
+			
+		}
+		.modal 
+		{
+			top:20% !important;
+		}
+		.alert{
+			text-align:center !important;
+		}
+		
+		ol {
+		  list-style: none;
+		}
+
+		ol li::before {
+		  content: "\21D2";
+		  color: red;
+		  font-weight: bold;
+		  display: inline-block; 
+		  line-height:25px;
+		  width: 1em;
+		  margin-left: -1em;
+		}
+	</style>
+	
+</head>
+
+<body onunload="" oncontextmenu="return false" ondragstart="return false" onkeypress="return disableCtrlKeyCombination(event);" onkeydown="return disableCtrlKeyCombination(event);">
+<?php include 'header.php'?>
+
+<div class="container text-center" id="main_div_min_height" style="min-height:430px;">
+	<noscript>
+		<h4 style="color: red;">Please enable JavaScript in your browser to use this application.</h4>
+	</noscript>
+	<span id="errMsg"></span>
+	<div class="loading" id="loading" style="display:none;"><img src="images/loader.svg"></div>
+	
+	<?php if(isset($_SESSION['lawyer']['passtype']) && ($_SESSION['lawyer']['passtype'] == '2')){ ?>
+		<div class="row text-center" style="margin-bottom:15px; margin-top:20px;">
+			<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="S" checked> Self (for Court)
+			</label> &nbsp; &nbsp; &nbsp; &nbsp;
+			<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="C"> Self (for Section)
+			</label> &nbsp; &nbsp; &nbsp; &nbsp;
+			<!--<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="J"> Jr. Advocate
+			</label> &nbsp; &nbsp; &nbsp; &nbsp;-->
+			<!--<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="L"> Litigants
+			</label>-->
+		</div>
+	<?php } else {?>
+		<div class="row" style="margin-bottom:15px; margin-top:20px;">
+			<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="S" checked> For Court
+			</label> &nbsp; &nbsp; &nbsp; &nbsp;
+			<label>
+				<input type="radio" class="passfor" name="chkpassfor" onclick="" value="C"> For Section
+			</label>
+		</div>
+	<?php } ?>
+	<?php if(isset($_SESSION['lawyer']['passtype']) && ($_SESSION['lawyer']['passtype'] == '1' || $_SESSION['lawyer']['passtype'] == '2')){ ?>
+		<div class="row alert alert-danger DIV_ALERT_MSG" style="margin-bottom:5px; font-size:15px; color:#372451; border:1px solid #ffc7c7; border-radius:15px; box-shadow:0px 0px 5px 5px #ecd6d6; padding:15px 15px 7px;">
+			<div class="col-md-12">
+				<ol class="lblMsg">
+					<li class="text-justify lbladvLitigant1" style="color:#ff0942;"> If your other cases are also listed, separate ePass for such cases will not be required. ePass issued for any of the case will be sufficient and will be valid for the whole day.</li>
+					<li class="text-justify lbladvLitigant2" style="color:#ff0942;"> ePass will be issued only for maximum 2 Advocates for Petitioners / Appellants / Applicants or Respondents in one case.</li>
+				</ol>
+			</div>
+		</div>
+	<?php } ?>
+	<form class="form-horizontal" id="courtPassForm" name="courtPassForm">
+		<div class="form-group caseDetails" style="margin-top:20px;">
+			
+			<div class="row" style="margin-top:20px;">
+				<div class="col-md-12">
+					<label class="control-label col-sm-2" style="text-align:left !important;">Case Type:</label>
+					<div class="col-sm-2">
+						<select class="form-control case_type" name="case_type" onchange="changeInputVal();">
+							<option value="0"> Case Type </option>
+						</select>
+					</div>
+					<label class="control-label col-sm-2" style="text-align:left !important;">Case No:</label>
+					<div class="col-sm-2">
+						<input type="text" name="case_no" class="form-control case_no" id="case_no" onkeypress="return onlyNumbers(event);" onchange="changeInputVal();" onkeyup="changeInputVal();" maxlength="6"/>
+					</div>
+					<label class="control-label col-sm-2" style="text-align:left !important;">Case Year:</label>
+					<div class="col-sm-2">
+						<select class="form-control case_year" name="case_year" onchange="changeInputVal();">
+							<option value="0"> Case Year </option>
+							<?php 
+								for($yr=date('Y'); $yr>1950; $yr--){
+									echo "<option value='$yr'> $yr </option>";
+								}
+							?>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-12" style="margin-top:15px;">
+					<label class="control-label col-sm-2" style="text-align:left !important;">Causelist Type:</label>
+					<div class="col-sm-2">
+						<select class="form-control cl_type" name="cl_type" onchange="changeInputVal();">
+							<option value="0"> Causelist Type </option>
+							<option value="D"> Daily </option>
+							<option value="S"> Supplementary </option>
+							<option value="W"> Weekly </option>
+							<option value="L"> Regular </option>
+						</select>
+					</div>
+					<label class="control-label col-sm-2" style="text-align:left !important;">Causelist Date:</label>
+					<div class="col-sm-2">
+						<input type="text" autocomplete="off" class="form-control req-Feild datepickercalender cl_dt" id="cl_dt" name="cl_dt" placeholder="dd/mm/yyyy" maxlength="10" onkeypress="return checkdatecharacter(event); changeInputVal();" onchange="changeInputVal();" readonly />
+					</div>
+					<label class="control-label col-sm-2 LBL_PARTY_TYPE" style="display:none; text-align:left !important;">Litigant Type:</label>
+					<div class="col-sm-2 DIV_PARTY_TYPE" style="display:none;">
+						<select class="form-control party_type" name="party_type" onchange="changeInputVal();">
+							<option value="0"> Litigant Type </option>
+							<option value="1">Petitioner</option>
+							<option value="2">Respondent</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-12 DIV_GEN_PASS" style="display:none;"><hr/></div>
+				<div class="col-md-12 DIV_GEN_PASS" style="display:none;">
+					<label class="col-md-3" style="text-align:left !important"> Case listed in Court Number :</label>
+					<label class="col-md-3 lblCourtNo" style="text-align:left !important"></label>
+					<label class="col-md-3" style="text-align:left !important"> Case listed at Item Number :</label>
+					<label class="col-md-3 lblItemNo" style="text-align:left !important"></label>
+					<input type="hidden" id="hdn_cino"/>
+					<input type="hidden" id="hdn_adv_type"/>
+				</div>
+				<div class="col-md-12 DIV_PASS_FOR_PARTY" style="margin-top:15px; display:none;">
+					<label class="col-md-3" style="text-align:left !important"> Select Litigant Name :</label>
+					<div class="col-md-3">
+						<select class="form-control" id="passPartyNo">
+							<option value="">Select</option>
+						</select>
+					</div>
+					<label class="col-md-3" style="text-align:left !important">Litigant Mobile No :</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="mobileno" name="mobileno" placeholder="Litigant mobile no." pattern="[0-9]*" minlength="10" maxlength="10" required onkeypress="return onlyNumbers(event);" autocomplete="off"/>
+					</div>
+				</div>
+				<div class="col-md-12 DIV_PASS_FOR_JUNIOR" style="margin-top:15px; display:none;">
+					<label class="col-md-3" style="text-align:left !important"> Enrollment No. :</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="jrenroll" name="jrenroll" placeholder="Enrollment No." maxlength="16" onkeypress="return isAlphaNumericCharater(event);" autocomplete="off"/>
+						<span id="jr_enroll_error" style="color:red; font-size:13px;"></span>
+					</div>
+					<label class="col-md-3" style="text-align:left !important">Jr. Advocate Name :</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="jradvname" name="jradvname" placeholder="Jr. Advocate Name" maxlength="100" onkeypress="return AllowAlphabet(event);" readonly autocomplete="off"/>
+					</div>
+					<label class="col-md-3" style="text-align:left !important; margin-top:15px;">Mobile No :</label>
+					<div class="col-md-3" style="margin-top:15px;">
+						<input type="text" class="form-control" id="jradvmob" name="jradvmob" placeholder="Jr. Advocate Mobile No" pattern="[0-9]*" minlength="10" maxlength="10" onkeypress="return onlyNumbers(event);" readonly autocomplete="off"/>
+						<input type="hidden" id="hdn_jradvmob"/>
+					</div>
+				</div>
+				<div class="col-md-12 DIV_GEN_PASS" style="display:none;"><hr/></div>
+				<div class="col-md-12 DIV_GEN_PASS_ADDRESS" style="margin-top:15px; display:none;">
+					<label class="control-label lblAddress col-md-2" style="text-align:left !important">Present residential address:</label>
+					<div class="col-sm-6">
+						<textarea type="text" name="paddress" class="form-control paddress" id="paddress" onkeypress="return addressValidation(event);" maxlength="250" rows="3" cols="6"></textarea>
+					</div>
+				</div>
+				<div class="row">
+					<?php if(isset($_SESSION['lawyer']['passtype']) && ($_SESSION['lawyer']['passtype'] == '3')){ ?>
+					<div class="col-md-12 DIV_GEN_PASS" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkpartyinperson"> <span id="idSpanDeclare3">I declare that I am appearing as Party-in-Person in this case and I am not represented by any Advocate.</span>
+						</label>
+					</div>
+					<?php } ?>
+					<div class="col-md-12 DIV_GEN_PASS" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkcoronazone"> <span id="idSpanDeclare1">I declare that I am not under quarantine / isolation.</span>
+						</label>
+					</div>
+					<div class="col-md-12 DIV_GEN_PASS" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkmedical"> <span id="idSpanDeclare2">I declare that I am medically fit and not suffering from fever, flue or like disease.</span>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-center" style="margin-bottom:20px;">
+						<center>
+							<button title="Search Details" type="button" class="btn btn-primary" id="searchBtn" style="margin-top:20px;" onclick="return searchcaseentries();"><i class="fa fa-search"></i> &nbsp;Search</button>
+							<input type="hidden" id="csrftoken" name="csrftoken" value="<?php echo $_SESSION['lawyer']['CSRF_Token'];?>"/>
+							<a href="" style="margin-top:20px; display:none;" id="CancelBtn" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>&nbsp; &nbsp; &nbsp; &nbsp; 
+							<button type="button" style="margin-top:20px; display:none;" id="GeneratehBtn" class="btn btn-primary" onclick="generatePass();"><i class="fa fa-save"></i> &nbsp; Generate Pass</button>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form> 
+	<form class="form-horizontal" id="sectionPassForm" name="sectionPassForm" style="display:none;">
+		<div class="form-group caseDetails">
+			<div class="row" style="margin-top:20px;">
+				<div class="row" style="margin-top:10px;">
+					<div class="col-md-12">
+						<label class="control-label col-sm-2" style="text-align:left !important;">Date of Visit:</label>
+						<div class="col-sm-3">
+							<input type="text" autocomplete="off" class="form-control datepickercalender section_pass_dt" id="section_pass_dt" placeholder="dd/mm/yyyy" maxlength="10" onkeypress="return checkdatecharacter(event);" readonly />
+						</div>
+						<div class="col-sm-2"></div>
+						<label class="control-label col-sm-2" style="text-align:left !important;">Purpose of Visit:</label>
+						<div class="col-sm-3">
+							<select name="section_pass_purpose[]" id="section_pass_purpose" class="section_pass_purpose form-control" data-placeholder="Select Purpose" multiple>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row DIV_PURPOSE_OF_VISIT_RMK">
+				
+				</div>
+				<div class="row">
+					<?php /*if(isset($_SESSION['lawyer']['passtype']) && ($_SESSION['lawyer']['passtype'] == '3')){ ?>
+					<div class="col-md-12 DIV_SECTION_DECLARTION" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkpartyinpersonsection"> <span id="idSpanDeclare3">I declare that I am appearing as Party-in-Person in this case and I am not represented by any Advocate.</span>
+						</label>
+					</div>
+					<?php }*/ ?>
+					<div class="col-md-12 DIV_GEN_PASS DIV_SECTION_DECLARTION" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkcoronazonesection"> <span id="idSpanDeclare1">I declare that I am not under quarantine / isolation.</span>
+						</label>
+					</div>
+					<div class="col-md-12 DIV_GEN_PASS DIV_SECTION_DECLARTION" style="margin-top:15px; display:none;">
+						<label class="control-label col-sm-12" style="text-align:left !important;">
+							<input type="checkbox" id="chkmedicalsection"> <span id="idSpanDeclare2">I declare that I am medically fit and not suffering from fever, flue or like disease.</span>
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-12 text-center DIV_SECTION_BUTTON" style="margin-bottom:20px;">
+					<a href="" style="margin-top:20px;" id="resetsectionform" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>&nbsp; &nbsp; &nbsp; &nbsp; 
+					<button type="button" style="margin-top:20px;" id="btngeneratesection" class="btn btn-primary" onclick="generatePassSection();"><i class="fa fa-save"></i> &nbsp; Generate Pass</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div id="no_record_found_modal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">		
+		<div class="modal-content modal-content col-md-6 col-md-offset-3">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<a href="generate-pass.php" class="close" data-dismiss="modal">&times;</a>
+				</div>
+				<div class="modal-body">
+					<label class="col-md-12"></label>					 
+					<div class="alert alert-danger">
+						<b class="error">No Record Found for select details</b>.
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<button type="button" class="btn btn-primary" style="float:right" data-dismiss="modal">OK</button>
+						</div>
+					</div>		
+				</div>
+			</form>
+        </div>	
+    </div>
+</div>
+
+<div id="advNameNotExistsModal" class="modal fade" role="dialog" style="z-index:9995;">
+	<div class="modal-dialog modal-md">		
+		<div class="modal-content modal-content col-md-12">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">&times;</a>
+				</div>
+				<div class="modal-body modal_body_adv">
+					<label class="col-md-12 alert alert-danger" id='advNameModelText'></label>
+					<div class="row div_advname_YesNo">
+						<div>
+							<label class="radio-inline">
+								<b>Are you sure, your name is printed in the Cause List?</b>
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="advnamexists" class="advnamexists" value="Y"> Yes
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="advnamexists" class="advnamexists" value="N"> No
+							</label>
+						</div>
+					</div>
+					<div class="row div_update_advname" style="margin-top:15px; display:none;">
+						<label class="col-md-7">Please enter your name as shown in the Cause List</label>
+						<div class="col-md-5">
+							<input type="text" class="form-control uppercase" id="updcaseadvname" name="updcaseadvname" placeholder="Name in this case" maxlength="100" style="text-transform:uppercase;" onkeypress="return AllowAlphabet(event);" autocomplete="off"/>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="col-sm-12 col-md-12 col-xs-12 text-center errormsgAdvNameUpd" style="display:none; padding:8px 5px; margin-bottom:15px;"></div>
+					<div class="col-sm-12 col-md-12 col-xs-12">
+						<button type="button" class="btn btn-danger btnCloseAdvName" style="float:right" data-dismiss="modal">
+							Close
+						</button>
+						<button type="button" class="btn btn-primary btnUpdateName" onclick="updateAdvname()" style="float:left; display:none">
+							Continue to Generate Pass
+						</button>
+						<button type="button" class="btn btn-primary btnContiunePass" onclick="searchcaseentries()" style="float:left; display:none">
+							Continue to Generate Pass
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>
+ 
+<div id="blank_field_modal" class="modal fade" role="dialog" style="z-index:9999;">
+	<div class="modal-dialog modal-md">		
+		<div class="modal-content modal-content col-md-12">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">&times;</a>
+				</div>
+				<div class="modal-body">
+					<label class="col-md-12"></label>					 
+					<div class="alert alert-danger" id='modelText'>
+					</div>	
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<button type="button" class="btn btn-primary" style="float:right" data-dismiss="modal">OK</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>
+ 
+<div id="showCaseDetails" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-md">		
+		<div class="modal-content modal-content">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<span class="caption" style="font-size:15px; font-weight:bold; color:#373cd8;">Case Listing Details</span>
+					<a class="close" data-dismiss="modal">&times;</a>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+ 
+<div id="success_field_modal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">		
+		<div class="modal-content modal-content col-md-6 col-md-offset-3">
+			<form class="form-horizontal">
+				<div class="modal-header">
+					<span class="caption" style="font-size:15px; font-weight:bold; color:#373cd8;">Pass Details</span>
+					<a href="" class="close">&times;</a>
+				</div>
+				<div class="modal-body text-justify">
+					<label class="col-md-12"></label>					 
+					<div class="alert alert-success" id='successModelText'></div>	
+					<div class="form-group">
+						<div class="col-sm-12 col-md-12 col-xs-12">
+							<button type="button" class="btn btn-success btnDownloadePass" style="float:left" onclick="downloadePass(this.id)">Download Pass</button>
+							<a href="" class="btn btn-primary" style="float:right">OK</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>	
+	</div>
+</div>
+<a href="" download class="downloadFile" id="downloadFile" tabindex="-1" target="_blank"></a>
+
+<script type="text/javascript" src="includes/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="includes/css/bootstrap-multiselect.css" type="text/css"/>
+
+<script type="text/javascript">	
+	var purposeofvisit = 'No';
+	
+	$('.advnamexists').on('change', function(){
+		var chkVal = $.trim($('.advnamexists:checked').val());
+		
+		$('#advNameModelText').hide();
+		$('#updcaseadvname').val('');
+		if(chkVal == 'Y'){
+			$('.div_update_advname').show();
+			$('.btnUpdateName').show();
+		}
+		else{
+			$('.div_update_advname').hide();
+			$('.btnUpdateName').hide();
+		}
+	});
+	
+	function updateAdvname(){
+		var advname = $.trim($('#updcaseadvname').val());
+		var type 	= $('.case_type').val();
+		var no   	= $.trim($('.case_no').val());
+		var year 	= $('.case_year').val();
+		var cltype 	= $('.cl_type').val();
+		var cldt  	= $.trim($('.cl_dt').val());
+		
+		if(advname != '' && type != '0' && no != '' && no != '0' && year != '0' && cltype != '0' && cl_dt != ''){
+			ajaxEnroll=0;
+			var csrf = $.trim($('#csrftoken').val());
+			
+			$('.btnContiunePass').hide();
+			$('.loading').show();
+			$.ajax({
+				type:"POST",
+				cache:false,
+				dataType:"JSON",
+				url:"ajax-responce.php",
+				data:'type='+btoa(type)+'&no='+btoa(no)+'&year='+btoa(year)+'&cltype='+btoa(cltype)+'&cldt='+btoa(cldt)+'&advname='+btoa(advname)+'&csrftoken='+csrf+'&QueryType=updateAdvname',  
+				success: function(html) {
+					var dataArr = $.trim(html).split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == "OK"){
+						$('.errormsgAdvNameUpd').removeClass('alert-danger').addClass('alert-success').html('Your name has been updated in this case.').show();
+						$('.btnContiunePass').hide();
+						$('.div_advname_YesNo').hide();
+						$('.div_update_advname').hide();
+						$('.btnUpdateName').hide();
+						//$('#updcaseadvname').val('');
+						$('.modal_body_adv').hide();
+						$('#advNameNotExistsModal').modal('hide');
+						searchcaseentries(advname);
+					}
+					else if(dataArr[0] == "GNANE") {
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Entered advocate name is not available in cause list.').show();
+					}
+					else if(dataArr[0] == "CNE") {
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Case details not found in selected causelist.').show();
+					}
+					else if(dataArr[0] == "NU") {
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Name not updated due to some technical issue.').show();
+					}
+					else if(dataArr[0] == "IVI") {
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Invalid Input Value.').show();
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Authentication failed.').show();
+					}
+					else {
+						$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Error occured.').show();
+					}
+					$('.loading').hide();
+				}
+			});
+		}
+		else {
+			$('.errormsgAdvNameUpd').removeClass('alert-success').addClass('alert-danger').html('Please enter name.').show();
+		}
+	}
+	
+	function printDiv(){
+	  var divToPrint=document.getElementById('successModelText');
+	  var newWin=window.open('','Print-Window');
+	  newWin.document.open();
+	  newWin.document.write('<html><body onload="window.print()" style="text-align:center;">'+divToPrint.innerHTML+'</body></html>');
+	  newWin.document.close();
+	  setTimeout(function(){newWin.close();},10);
+	}
+
+	function isPastDate(startDate, endDate){
+		// date is dd/mm/yyyy
+		var fromDate = startDate.split("/");
+		var toDate = endDate.split("/");
+		fromDate = new Date(fromDate[2], fromDate[1] - 1, fromDate[0], 0, 0, 0, 0);
+		toDate = new Date(toDate[2], toDate[1] - 1, toDate[0], 0, 0, 0, 0);
+		return fromDate <= toDate;
+	}
+	
+	function changeInputVal(){
+		$('.DIV_GEN_PASS').each(function(){
+			$(this).hide();
+		});
+		$('#passPartyNo').val(0);
+		$('#mobileno').val('');
+		$('#paddress').val('');
+		
+		$('#searchBtn').show();
+		$('#CancelBtn').hide();
+		$('#GeneratehBtn').hide();
+		$('.DIV_PASS_FOR_PARTY').hide();
+	}
+	
+	$('.passfor').on('click', function(){
+		$('.party_type').val(0);
+		changeInputVal();
+		$('.DIV_ALERT_MSG').show();
+		$('#courtPassForm').trigger("reset");
+		$('#sectionPassForm').trigger("reset").hide();
+		
+		$('.LBL_PARTY_TYPE').hide();
+		$('.DIV_PARTY_TYPE').hide();
+		
+		$('#courtPassForm').show();
+		$('#sectionPassForm').hide();
+		$('#searchBtn').show();
+		$('.DIV_GEN_PASS_ADDRESS').hide();
+		
+		$('.lblAddress').html('Present residential address:');
+		$('.lbladvLitigant1').html(' If your other cases are also listed, separate ePass for such cases will not be required. ePass issued for any of the case will be sufficient and will be valid for the whole day.');
+		$('.lbladvLitigant2').html(' ePass will be issued only for maximum 2 Advocates for Petitioners / Appellants / Applicants or Respondents in one case.');
+		
+		$('#idSpanDeclare1').html(' I declare that I am not under quarantine / isolation.');
+		$('#idSpanDeclare2').html(' I declare that I am medically fit and not suffering from fever, flue or like disease.');
+		if($.trim($(this).val()) == 'L'){
+			$('.LBL_PARTY_TYPE').show();
+			$('.DIV_PARTY_TYPE').show();
+			$('.lblAddress').html('Residential address of Litigant:');
+			$('.lbladvLitigant1').html(' Gate-Pass shall be issued only for one litigant for either side i.e. Petitioner(s) or Respondent(s) in a case.');
+			$('.lbladvLitigant2').html(' Gate-Pass shall be issued only in the name of the person who is party in the case.');
+			//$('.lbladvLitigant3').html('');
+			//$('.lbladvLitigant3').hide();
+			
+			$('#idSpanDeclare1').html(' I have verified that the person for whom I am recommending the Gate-Pass is not under quarantine/isolation.');
+			$('#idSpanDeclare2').html(' I have verified that the person for whom I am recommending the Gate-Pass is medically fit and not suffering from fever, flu or other like disease.');
+		}
+		else if($.trim($(this).val()) == 'C'){
+			$('.DIV_ALERT_MSG').hide();
+			$('#courtPassForm').hide();
+			$('#sectionPassForm').show();
+			$('.DIV_SECTION_DECLARTION').each(function(){
+				$(this).show();
+			});
+			getpurpose();
+			$('.section_pass_dt').val('');
+		}
+	});
+	
+	function searchcaseentries(advname){
+		$('#advNameNotExistsModal').modal('hide');
+		var type 	= $('.case_type').val();
+		var no   	= $.trim($('.case_no').val());
+		var year 	= $('.case_year').val();
+		var cltype 	= $('.cl_type').val();
+		var cl_dt  	= $.trim($('.cl_dt').val());
+		var paddress= $.trim($('.paddress').val());
+		var passtype= "<?php echo $_SESSION['lawyer']['passtype']; ?>";
+		var today  	= "<?php echo date('d/m/Y'); ?>";
+		var lastdt 	= "<?php echo date('d/m/Y', strtotime(date('Y-m-d').' + 30 days')); ?>";
+		var crntdt 	= "<?php echo date('d/m/Y'); ?>";
+		
+		$('#hdn_cino').val(''); //$('#updcaseadvname').val(''); 
+		$('#hdn_adv_type').val('');
+		
+		var jrerror = $('#jr_enroll_error').text();
+		
+		$('#chkcoronazone').prop('checked', false);
+		$('#chkmedical').prop('checked', false);
+		$('#chkpartyinperson').prop('checked', false);
+		
+		var party  = $.trim($('.party_type').val());
+		var passfor= $.trim($('.passfor:checked').val());
+		
+		var crrntm = "<?php echo date('Y-m-d H:i:s'); ?>";
+		var maxptm = "<?php echo date('Y-m-d').' 22:59:59'; ?>";
+		
+		
+		$('.DIV_PASS_FOR_JUNIOR').hide();
+		$('.DIV_PASS_FOR_PARTY').hide();
+		
+		if(type == '0' || no == '' || year == '0' || cltype == '0' || cl_dt == '' || (passfor == 'L' && party == '0')){
+			$('#modelText').text('Please fill manadatory information');
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
+		else if(cl_dt == today && new Date(crrntm) > new Date(maxptm)){
+			$('#modelText').text("After court hours you can't generate pass for today causelist");
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
+		else if(!isPastDate(today, cl_dt)){
+			$('#modelText').text('Please check causelist date');
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
+		else if(!isPastDate(cl_dt, lastdt)){
+			$('#modelText').text('Future causelist still not prepaired');
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
+		else{
+			$('#passPartyNo').html('<option value="">Select</option>');
+			$('#mobileno').val('');
+			var csrf = $('#csrftoken').val();
+			
+			$('#loading').show();
+			$.ajax({
+				type:"POST",
+				cache:false,
+				url:"ajax-responce.php",
+				data:'type='+btoa(type)+'&no='+btoa(no)+'&year='+btoa(year)+'&cltype='+btoa(cltype)+'&cldt='+btoa(cl_dt)+'&passfor='+btoa(passfor)+'&party='+btoa(party)+'&advname='+btoa(advname)+'&csrftoken='+csrf+'&QueryType=searchCases',
+				dataType:"JSON",
+				success: function (data) {
+					$('#csrftoken').val(data[0]['csrftoken']);
+					
+					if(data[0]['status'] == "ADVNA"){
+						if(passtype == '1' || passtype == '2'){
+							$('#advNameModelText').html("Your name is not matching with record of this case.");
+						}
+						else{
+							$('#advNameModelText').html("Your name is not matching with record of this case.");
+						}
+						
+						$('.advnamexists').prop('checked', false);
+						$('.div_advname_YesNo').show();
+						$('.div_update_advname').hide();
+						$('.btnUpdateName').hide();
+						$('#updcaseadvname').val('');
+						$('#advNameModelText').show();
+						$('.modal_body_adv').show();
+						$('.btnContiunePass').hide();
+						$('.errormsgAdvNameUpd').html('').hide();
+						
+						$('#advNameNotExistsModal').modal({
+							'backdrop':'static',
+							keyboard:false
+						});
+						$('#advNameNotExistsModal').modal('show');
+					}
+					else if(data[0]['status'] == "PNE" && party == '1'){
+						$('#modelText').html("You are not counsel for petitioner(s) in this case.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == "PNE" && party == '2'){
+						$('#modelText').html("You are not counsel for respondent(s) in this case.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == "CASENA"){
+						$('#modelText').html("Case details not found in selected causelist.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == 'PASSGENDT'){
+						$('#modelText').html("Your Pass has already been generated for this date.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == 'PASSEXISTS'){
+						$('#modelText').html("Your Pass has already been generated for this case.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == 'PRTPASSGEN'){
+						$('#modelText').html("Party pass has already been generated in this case.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == 'PET2PASS'){
+						$('#modelText').html("Two ePasses have already been issued for this case.");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == "IVI"){
+						$('#modelText').html("Invalid Input Field Value");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data[0]['status'] == "CSRF"){
+						$('#modelText').html("Authentication Failed");
+						$('#blank_field_modal').modal('show');
+					}
+					else if(data.length == 1){
+						$('#no_record_found_modal').modal('show');
+					}
+					else if(data[0]['status'] == "OK" && data.length > 1){
+						$('.lblCourtNo').text(data[1]['croom']);
+						$('.lblItemNo').text(data[1]['sno']);
+						$('#hdn_cino').val(data[1]['cino']);
+						$('#hdn_adv_type').val(data[1]['type']);
+						$('.DIV_GEN_PASS_ADDRESS').hide();
+						
+						if(passfor == 'L'){
+							for(var i=1; i<data.length; i++){
+								$('#passPartyNo').append('<option value="'+data[i]['party_no']+'">'+data[i]['party_nm']+'</option>');
+							}
+							$('.DIV_PASS_FOR_PARTY').show();
+							$('.DIV_GEN_PASS_ADDRESS').show();
+						}
+						$('.DIV_GEN_PASS').each(function(){
+							$(this).show();
+						});
+						$('#searchBtn').hide();
+						$('#CancelBtn').show();
+						$('#GeneratehBtn').show();
+					}
+					else{
+						$('#modelText').html("Technical issues are occured. Please try after some time.");
+						$('#blank_field_modal').modal('show');
+					}
+					$('#loading').hide();
+				}
+			});
+		}
+	}
+	
+	
+	function generatePass(){
+		var type = $('.case_type').val();
+		var no   = $.trim($('.case_no').val());
+		var year = $('.case_year').val();
+		var cltype = $('.cl_type').val();
+		var cl_dt  = $.trim($('.cl_dt').val());
+		var paddress = $.trim($('.paddress').val());
+		var today  = "<?php echo date('d/m/Y'); ?>";
+		var lastdt = "<?php echo date('d/m/Y', strtotime(date('Y-m-d').' + 30 days')); ?>";
+		
+		var mobregx = /^[0]?[6789]\d{9}$/;
+		
+		var crrntm = "<?php echo date('Y-m-d H:i:s'); ?>";
+		var maxptm = "<?php echo date('Y-m-d').' 22:59:59'; ?>";
+		var passtype = "<?php echo $_SESSION['lawyer']['passtype']; ?>";
+		
+		var party   = $.trim($('.party_type').val());
+		var passfor = $.trim($('.passfor:checked').val());
+		var partyno = $.trim($('#passPartyNo').val());
+		var partynm = $.trim($('#passPartyNo option:selected').text());
+		var partymob= $.trim($('#mobileno').val());
+		
+		var cino 	= $.trim($('#hdn_cino').val());
+		var advtype = $.trim($('#hdn_adv_type').val());
+		var courtno	= $.trim($('.lblCourtNo').text());
+		var itemno 	= $.trim($('.lblItemNo').text());
+		
+		var mobile = "<?php echo $mobileno; ?>";
+		var advName = "<?php echo $_SESSION['lawyer']['user_name'];?>";
+
+		//if(type == '0' || no == '' || year == '0' || cltype == '0' || cl_dt == '' || paddress == '' || (passfor == 'L' && (party == '0' || partyno == '' || partymob == ''))){
+		if(type == '0' || no == '' || year == '0' || cltype == '0' || cl_dt == '' || (passfor == 'L' && (party == '0' || partyno == '' || partymob == '' || paddress == ''))){
+			$('#modelText').text('Please fill manadatory information');
+			$('#blank_field_modal').modal('show');
+		}
+		else if(!mobregx.test(partymob) && partymob != ""){
+			$('#modelText').text('Please check mobile no');
+			$('#blank_field_modal').modal('show');
+		}
+		else if($('#chkcoronazone').is(':checked') == false){
+			$('#modelText').text('Please check corona zone declaration');
+			$('#blank_field_modal').modal('show');
+		}
+		else if($('#chkmedical').is(':checked') == false){
+			$('#modelText').text('Please check medically fit declaration');
+			$('#blank_field_modal').modal('show');
+		}
+		else if(passtype == '3' && $('#chkpartyinperson').is(':checked') == false){
+			$('#modelText').text('Please check party in person declaration');
+			$('#blank_field_modal').modal('show');
+		}
+		else if(cl_dt == today && new Date(crrntm) > new Date(maxptm)){
+			$('#modelText').text("After court hours you can't generate pass for today causelist");
+			$('#blank_field_modal').modal('show');
+		}
+		else if(!isPastDate(today, cl_dt)){
+			$('#modelText').text('Please check causelist date');
+			$('#blank_field_modal').modal('show');
+		}
+		else if(!isPastDate(cl_dt, lastdt)){
+			$('#modelText').text('Future causelist still not prepaired');
+			$('#blank_field_modal').modal('show');
+		}
+		else if(cino == '' || courtno == '' || itemno == '' || advtype == ''){
+			$('#modelText').text('Something went wrong. Please try after sometime.');
+			$('#blank_field_modal').modal('show');
+		}
+		else{
+			$('#showCaseDetails').modal('hide');
+			swal({
+				title: "Are you sure?",
+				text: "Do you want to generate pass for this case.",
+				showCancelButton: true,
+				cancelButtonColor: '#39b78e',
+				confirmButtonColor: '#ff000c',
+				confirmButtonText: 'Yes, Generate',
+				closeOnConfirm: true
+			},
+			function(){
+				var csrf = $('#csrftoken').val();
+				$('#loading').show();
+				$.ajax({
+					type:"POST",
+					cache:false,
+					url:"ajax-responce.php",
+					data:'cino='+btoa(cino)+'&adv_type='+btoa(advtype)+'&cldt='+btoa(cl_dt)+'&cltype='+btoa(cltype)+'&courtno='+btoa(courtno)+'&itemno='+btoa(itemno)+'&paddress='+btoa(paddress)+'&party='+btoa(party)+'&passfor='+btoa(passfor)+'&partyno='+btoa(partyno)+'&partynm='+btoa(partynm)+'&partymob='+btoa(partymob)+'&csrftoken='+csrf+'&QueryType=genPass',
+					dataType:"JSON",
+					success: function (data) {
+						var daraArr = data.split('##');
+						$('#csrftoken').val(daraArr[1]);
+						if(daraArr[0] == "OK"){
+							$('#courtPassForm').trigger("reset");
+							//$('#successModelText').html("<b>Rajasthan High Court</b><br/><br/><p style='text-align:justify !important;'>This pass is not valid for residents of Hot spot/Containment Zones/Restricted Area/Area under Curfew and the persons under Quarantine/Isolation.</p><br/> <p style='text-align:justify !important;'>This entry Pass Issued for <b>"+advName+"</b> valid for <b>"+cl_dt+"</b> only.</p>");
+							if(passfor == 'L'){
+								var mobf = partymob.substring(0, 2);
+								var mobl = partymob.substring(8);
+								mobile = mobf+'******'+mobl;
+							}
+							
+							$('.btnDownloadePass').attr('id', daraArr[2]+'@@C');
+							$('#successModelText').html("<p>Pass generated and sent on "+mobile+" mobile number. Please check.</p><br/><p>ePass sent through SMS is valid for entry and printout is not needed.</p><br/><p>If required, you may download it.</p>");
+							
+							$('#success_field_modal').modal({
+								backdrop:'static',
+								keyboard:false
+							});
+							$('#success_field_modal').modal('show');
+						}
+						else if(daraArr[0] == "CSRF"){
+							$('#modelText').html("Authentication Failed.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == "IVI"){
+							$('#modelText').html("Invalid Input Field Value");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PASSGENDT'){
+							$('#modelText').html("Your Pass has already been generated for this date.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PASSEXISTS'){
+							$('#modelText').html("Your Pass has already been generated for this case.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PRTPASSGEN'){
+							$('#modelText').html("Party pass has already been generated in this case.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PPASSEXISTS'){
+							$('#modelText').html("Pass has already been generated for same party.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PET2PASS'){
+							//$('#modelText').html("ePass will be issued only for maximum 2 Advocates for Petitioners / Appellants / Applicants in one case.");
+							$('#modelText').html("Two ePasses have already been issued for this case.");
+							$('#blank_field_modal').modal('show');
+						}
+						else{
+							$('#modelText').html("Technical issues are occured. Please try after some time.");
+							$('#blank_field_modal').modal('show');
+						}
+						$('#loading').hide();
+					}
+				});
+			});
+		}
+	}
+	
+	function generatePassSection(){
+		var today  	= "<?php echo date('d/m/Y'); ?>";
+		var lastdt 	= "<?php echo date('d/m/Y', strtotime(date('Y-m-d').' + 30 days')); ?>";
+		
+		var crrntm 	 = "<?php echo date('Y-m-d H:i:s'); ?>";
+		var maxptm 	 = "<?php echo date('Y-m-d').' 16:59:59'; ?>";
+		var passtype = "<?php echo $_SESSION['lawyer']['passtype']; ?>";
+		
+		var passfor	= $.trim($('.passfor:checked').val());
+		
+		var pass_dt 		= $.trim($('.section_pass_dt').val());
+		var vist_purpose	= $.trim($('.section_pass_purpose').val());
+		
+		var mobile  = "<?php echo $mobileno; ?>";
+		var advName = "<?php echo $_SESSION['lawyer']['user_name'];?>";
+		
+		var purvisiterror = 'No'; 
+		var purposermks = [];
+		if(vist_purpose != ''){
+			var purArr = vist_purpose.split(',');
+			for(var i = 0; i<purArr.length; i++){
+				if($.trim($('#purpose_of_visit_'+purArr[i]).val()) == ''){
+					purvisiterror = 'Yes';
+				}
+				
+				purposermks.push({purpose:$.trim($("#section_pass_purpose option[value='"+purArr[i]+"']").text()), remark:$.trim($('#purpose_of_visit_'+purArr[i]).val())});
+			}
+		}
+		//console.log(purposermks);
+		
+		if(pass_dt == '' || vist_purpose == '' || vist_purpose == null || purvisiterror == 'Yes'){
+			$('#modelText').text('Please fill manadatory information');
+			$('#blank_field_modal').modal('show');
+		}
+		else if($('#chkcoronazonesection').is(':checked') == false){
+			$('#modelText').text('Please check corona zone declaration');
+			$('#blank_field_modal').modal('show');
+		}
+		else if($('#chkmedicalsection').is(':checked') == false){
+			$('#modelText').text('Please check medically fit declaration');
+			$('#blank_field_modal').modal('show');
+		}
+		/*else if(passtype == '3' && $('#chkpartyinpersonsection').is(':checked') == false){
+			$('#modelText').text('Please check party in person declaration');
+			$('#blank_field_modal').modal('show');
+		}*/
+		else if(pass_dt == today && new Date(crrntm) > new Date(maxptm)){
+			$('#modelText').text("After court hours you can't generate pass for today");
+			$('#blank_field_modal').modal('show');
+		}
+		else if(!isPastDate(today, pass_dt) || !isPastDate(pass_dt, lastdt)){
+			$('#modelText').text('Please check pass date');
+			$('#blank_field_modal').modal('show');
+		}
+		else{
+			$('#showCaseDetails').modal('hide');
+			swal({
+				title: "Are you sure?",
+				text: "Do you want to generate pass for this date.",
+				showCancelButton: true,
+				cancelButtonColor: '#39b78e',
+				confirmButtonColor: '#ff000c',
+				confirmButtonText: 'Yes, Generate',
+				closeOnConfirm: true
+			},
+			function(){
+				var csrf = $('#csrftoken').val();
+				$('#loading').show();
+				$.ajax({
+					type:"POST",
+					cache:false,
+					url:"ajax-responce.php",
+					data:'passfor='+btoa(passfor)+'&pass_dt='+btoa(pass_dt)+'&vist_purpose='+btoa(vist_purpose)+'&purposermks='+btoa(JSON.stringify(purposermks))+'&csrftoken='+csrf+'&QueryType=genSectionPass',
+					dataType:"JSON",
+					success: function (data) {
+						var daraArr = data.split('##');
+						$('#csrftoken').val(daraArr[1]);
+						if(daraArr[0] == "OK"){
+							$('#sectionPassForm').trigger("reset");
+							
+							$('#successModelText').html("<p>Pass generated and sent on "+mobile+" mobile number. Please check.</p><br/><p>ePass sent through SMS is valid for entry and printout is not needed.</p><br/><p>If required, you may download it.</p>");
+							
+							$('.btnDownloadePass').attr('id', daraArr[2]+'@@S');
+							$('#success_field_modal').modal({
+								backdrop:'static',
+								keyboard:false
+							});
+							$('#success_field_modal').modal('show');
+						}
+						else if(daraArr[0] == "CSRF"){
+							$('#modelText').html("Authentication Failed.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == "IVI"){
+							$('#modelText').html("Invalid Input Field Value");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PASSGENDT'){
+							$('#modelText').html("Your Pass has already been generated for this date.");
+							$('#blank_field_modal').modal('show');
+						}
+						else if(daraArr[0] == 'PASSEXISTS'){
+							$('#modelText').html("Your Pass has already been generated for this date.");
+							$('#blank_field_modal').modal('show');
+						}
+						else{
+							$('#modelText').html("Technical issues have occurred. Please try after some time.");
+							$('#blank_field_modal').modal('show');
+						}
+						$('#loading').hide();
+					}
+				});
+			});
+		}
+	}
+</script>
+
+<script>
+	$(document).ready(function(){
+		var endt  = "<?php echo date('d/m/Y', strtotime(date('Y-m-d').' + 30 days')); ?>";
+		var today  = "<?php echo date('d/m/Y'); ?>";
+		$(".datepickercalender").datepicker({
+			format: 'dd/mm/yyyy',
+			startDate: today,
+			endDate: endt,
+			autoclose: true
+		});
+		getcasetype();
+	});
+
+	function getcasetype(){
+		$('.case_type').html("<option value='0'>Case Type</option>");
+		ajaxRequest = $.ajax ({
+			type: 'post',
+			evalScripts: true,
+			url:"ajax-responce.php",
+			dataType:"JSON",
+			data:"csrftoken="+$('#csrftoken').val()+"&QueryType=casetype",
+			success:function(data){
+				$('#csrftoken').val(data[0]['csrftoken']);
+				if(data[0]['status'] == 'OK'){
+					for(var i=1; i<data.length; i++){
+						$('.case_type').append("<option value='"+data[i]['case_type']+"'>"+data[i]['type_name']+"</option>");
+					}
+				}
+				else if(data[0]['status'] == 'CSRF'){
+					$('#modelText').text('Authentication Failed !!.');
+					$('#blank_field_modal').modal('show');
+				}
+				else{
+					$('#modelText').text('Somtheing went wrong !!.');
+					$('#blank_field_modal').modal('show');
+				}
+				$('#loading').hide();
+				$('.close-icon-css').hide();
+			}			
+		});
+	}
+	
+	function getpurpose(){
+		if(purposeofvisit == 'No'){
+			$('#loading').show();
+			$('.close-icon-css').show();
+			$('.section_pass_purpose').html("");
+			$('.DIV_PURPOSE_OF_VISIT_RMK').html("");
+			ajaxRequest = $.ajax ({
+				type: 'post',
+				evalScripts: true,
+				url:"ajax-responce.php",
+				dataType:"JSON",
+				data:"csrftoken="+$('#csrftoken').val()+"&QueryType=getPurpose",
+				success:function(data){
+					$('#csrftoken').val(data[0]['csrftoken']);
+					if(data[0]['status'] == 'OK'){
+						purposeofvisit = 'Yes';
+						var htmloption = ''; var htmlpurposermk = '';
+						for(var i=1; i<data.length; i++){
+							htmloption += "<option value='"+data[i]['id']+"'>"+data[i]['purpose']+"</option>";
+						}
+						for(var i=1; i<data.length; i++){
+							htmlpurposermk += '<div class="col-md-12"><label class="control-label col-sm-5 hdn_purpose_rmk lbl_hdn_purpose_rmk_'+data[i]['id']+'" style="text-align:left !important; margin-top:10px; display:none;">Remark of '+data[i]['purpose']+' Visit:</label><div class="col-sm-5 hdn_purpose_rmk div_hdn_purpose_rmk_'+data[i]['id']+'" style="margin-top:10px; display:none;"><input type="text" autocomplete="off" class="form-control purpose_of_visit_cls" id="purpose_of_visit_'+data[i]['id']+'" placeholder="Remark of '+data[i]['purpose']+' visit" onkeypress="return addressValidation(event);" maxlength="250" /></div></div>';
+						}
+						
+						$('.DIV_PURPOSE_OF_VISIT_RMK').html(htmlpurposermk);
+						
+						$('.section_pass_purpose').html(htmloption);
+						$('.section_pass_purpose').multiselect({
+							enableFiltering: true,
+							includeSelectAllOption: false,
+							buttonWidth: '100%',
+							dropRight: true
+						});
+						
+						$('.section_pass_purpose').multiselect('refresh');
+					}
+					else if(data[0]['status'] == 'CSRF'){
+						$('#modelText').text('Authentication Failed !!.');
+						$('#blank_field_modal').modal('show');
+					}
+					else{
+						$('#modelText').text('Somtheing went wrong !!.');
+						$('#blank_field_modal').modal('show');
+					}
+					$('#loading').hide();
+					$('.close-icon-css').hide();
+				}
+			});
+		}
+		else{
+			$('.section_pass_purpose').multiselect('refresh');
+		}
+	}
+
+	function downloadePass(passid){
+		if(passid != '' && passid != null){
+			var csrf = $('#csrftoken').val();
+			var dataArr = passid.split('@@');
+			
+			$('#loading').show();
+			ajaxRequest = $.ajax ({
+				type: 'post',
+				evalScripts: true,
+				url:"get-ePass-in-pdf.php",
+				data:"passid="+btoa(dataArr[0])+"&download="+btoa(dataArr[1])+"&csrftoken="+csrf+"&QueryType=getePassPdf",
+				success:function(data){
+					var dataArr = data.split('##');
+					$('#csrftoken').val(dataArr[1]);
+					
+					if(dataArr[0] == 'OK'){
+						$('#downloadFile').attr('href', dataArr[2]);
+						var element = document.getElementById('downloadFile');
+						var eventObj = document.createEvent('MouseEvents');
+						eventObj.initEvent('click',true,true);
+						element.dispatchEvent(eventObj);
+					}
+					else if(dataArr[0] == 'CSRF'){
+						$('#modelText').text('Authentication Failed !!.');
+						$('#blank_field_modal').modal('show');
+					}
+					else if(dataArr[0] == 'NAN'){
+						$('#modelText').text('Unauthorized access !!.');
+						$('#blank_field_modal').modal('show');
+					}
+					else{
+						$('#modelText').text('Somtheing went wrong !!.');
+						$('#blank_field_modal').modal('show');
+					}
+					$('#loading').hide();
+					$('.close-icon-css').hide();
+				}
+			});
+		}
+	}
+	
+	$('.section_pass_purpose').on('change', function(){
+		var vist_purpose = $.trim($('.section_pass_purpose').val());
+		
+		$('.hdn_purpose_rmk').each(function(){
+			$(this).hide();
+		});
+		
+		$('.purpose_of_visit_cls').each(function(){
+			$(this).val('');
+		});
+		
+		if(vist_purpose != ''){
+			var purArr = vist_purpose.split(',');
+			for(var i = 0; i<purArr.length; i++){
+				$('.lbl_hdn_purpose_rmk_'+purArr[i]).show();
+				$('.div_hdn_purpose_rmk_'+purArr[i]).show();
+			}
+		}
+	});
+</script>
+<?php if($_SESSION['lawyer']['passtype'] == 3) { include('popup.php'); ?>
+<script>
+$("#showModalGatepass").modal({
+	backdrop: 'static',
+	keyboard: false
+});
+$('#showModalGatepass').modal('show');
+</script>
+<?php } ?>
+<?php include 'footer.php';?>
