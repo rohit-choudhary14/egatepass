@@ -385,6 +385,12 @@
 						<input type="text" class="form-control" id="section_litigant_mobileno" name="mobileno" placeholder="Litigant mobile no." pattern="[0-9]*" minlength="10" maxlength="10" required onkeypress="return onlyNumbers(event);" autocomplete="off"/>
 					</div>
 				</div>
+				<div class="col-md-12 DIV_GEN_PASS_ADDRESS_FOR_LITIGANT_SECTION" style="margin-top:15px; display:none;">
+					<label class="control-label lblAddress col-md-2" style="text-align:left !important">Present residential address:</label>
+					<div class="col-sm-6">
+						<textarea type="text" name="paddress" class="form-control paddress" id="paddress_litigant_section" onkeypress="return addressValidation(event);" maxlength="250" rows="3" cols="6"></textarea>
+					</div>
+				</div>
 			</div>
 				
 				<div class="row">
@@ -660,6 +666,7 @@
 		$('#passPartyNo').val(0);
 		$('#mobileno').val('');
 		$('#paddress').val('');
+		$('#paddress_litigant_section').val('');
 		
 		$('#searchBtn').show();
 		$('#CancelBtn').hide();
@@ -684,6 +691,7 @@
 		$('#sectionPassForm').hide();
 		$('#searchBtn').show();
 		$('.DIV_GEN_PASS_ADDRESS').hide();
+		$('.DIV_GEN_PASS_ADDRESS_FOR_LITIGANT_SECTION').hide();
 		
 		$('.lblAddress').html('Present residential address:');
 		$('.lbladvLitigant1').html(' If your other cases are also listed, separate ePass for such cases will not be required. ePass issued for any of the case will be sufficient and will be valid for the whole day.');
@@ -725,6 +733,7 @@
 			getpurposeForLitigantsSection();
 			$('.DIV_PASS_FOR_LITIGANT_SECTION').show();
 			$('.section_pass_dt_for_litigants').val('');
+			$('.DIV_GEN_PASS_ADDRESS_FOR_LITIGANT_SECTION').show();
 		}
 	});
 	
@@ -1164,7 +1173,7 @@
 		var crrntm 	 = "<?php echo date('Y-m-d H:i:s'); ?>";
 		var maxptm 	 = "<?php echo date('Y-m-d').' 16:59:59'; ?>";
 		var passtype = "<?php echo $_SESSION['lawyer']['passtype']; ?>";
-		
+		var padAddress= $.trim($('#paddress_litigant_section').val());
 		var passfor	= $.trim($('.passfor:checked').val());
 		
 		var pass_dt 		= $.trim($('.section_pass_dt_for_litigants').val());
@@ -1176,11 +1185,6 @@
 		
 		var purvisiterror = 'No'; 
 		var purposermks = [];
-		// console.log("litigant_name",litigant_name);
-		// console.log("litigant_mob",litigant_mob);
-		// console.log("pass_dt",pass_dt);
-		// console.log("vist_purpose",vist_purpose);
-		// console.log("purvisiterror",purvisiterror);
 		if(vist_purpose != ''){
 			var purArr = vist_purpose.split(',');
 			for(var i = 0; i<purArr.length; i++){
@@ -1193,22 +1197,11 @@
 		}
 		//console.log(purposermks);
 		
-		if( litigant_name=='' || litigant_mob=='' ||  pass_dt == '' || vist_purpose == '' || vist_purpose == null || purvisiterror == 'Yes'){
+		if(padAddress==''|| litigant_name=='' || litigant_mob=='' ||  pass_dt == '' || vist_purpose == '' || vist_purpose == null || purvisiterror == 'Yes'){
 			$('#modelText').text('Please fill manadatory information');
 			$('#blank_field_modal').modal('show');
 		}
-		// else if($('#chkcoronazonesection').is(':checked') == false){
-		// 	$('#modelText').text('Please check corona zone declaration');
-		// 	$('#blank_field_modal').modal('show');
-		// }
-		// else if($('#chkmedicalsection').is(':checked') == false){
-		// 	$('#modelText').text('Please check vaccination certificate declaration');
-		// 	$('#blank_field_modal').modal('show');
-		// }
-		/*else if(passtype == '3' && $('#chkpartyinpersonsection').is(':checked') == false){
-			$('#modelText').text('Please check party in person declaration');
-			$('#blank_field_modal').modal('show');
-		}*/
+	
 		else if(pass_dt == today && new Date(crrntm) > new Date(maxptm)){
 			$('#modelText').text("After court hours you can't generate pass for today");
 			$('#blank_field_modal').modal('show');
@@ -1235,7 +1228,7 @@
 					type:"POST",
 					cache:false,
 					url:"ajax-responce.php",
-					data:'litigant_mob='+btoa(litigant_mob)+'&litigant_name='+btoa(litigant_name)+'&passfor='+btoa(passfor)+'&pass_dt='+btoa(pass_dt)+'&vist_purpose='+btoa(vist_purpose)+'&purposermks='+btoa(JSON.stringify(purposermks))+'&csrftoken='+csrf+'&QueryType=genSectionPassForLitigants',
+					data:'litigant_address='+btoa(padAddress)+'&litigant_mob='+btoa(litigant_mob)+'&litigant_name='+btoa(litigant_name)+'&passfor='+btoa(passfor)+'&pass_dt='+btoa(pass_dt)+'&vist_purpose='+btoa(vist_purpose)+'&purposermks='+btoa(JSON.stringify(purposermks))+'&csrftoken='+csrf+'&QueryType=genSectionPassForLitigants',
 					dataType:"JSON",
 					success: function (data) {
 						var daraArr = data.split('##');

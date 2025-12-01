@@ -1038,7 +1038,7 @@
 					ORDER BY A.causelist_dt DESC, B.reg_no, B.reg_year, C.type_name";
 			}
 			else if($passval == 'S'){
-				$MyQuery="SELECT A.pass_no, to_char(A.pass_dt, 'DD/MM/YYYY') AS pass_dt, to_char(A.entry_dt::date, 'DD/MM/YYYY') AS entry_dt, A.id, A.purposermks
+				$MyQuery="SELECT A.*, to_char(A.pass_dt, 'DD/MM/YYYY') AS pass_dt, to_char(A.entry_dt::date, 'DD/MM/YYYY') AS entry_dt, A.id, A.purposermks
 					FROM gatepass_details_section AS A
 					WHERE A.entry_dt::date>='$fromdt' AND A.entry_dt::date<='$todt' AND A.userid='$usrid'
 					ORDER BY A.pass_dt DESC";
@@ -1422,6 +1422,72 @@
 				return "NA##".$_SESSION['lawyer']['CSRF_Token']; exit();
 			}
 		}
+
+
+		function GENERATE_ADV_SECTION_PASS_FOR_LITIGANT($passfor, $passdt, $vist_purpose, $pass_dt, $purposermks,$litigant_name,$litigant_mob,$dbLitigantMobile,$litigant_address)
+		{
+			$passNo = str_replace('/', '', $pass_dt).date('His');
+			$advcd  = $_SESSION['lawyer']['adv_code'];
+			$enroll = strtoupper($_SESSION['lawyer']['enroll_no']);
+			$userid = $_SESSION['lawyer']['user_id'];
+			$userip = $_SERVER['REMOTE_ADDR'];
+			$passtype = $_SESSION['lawyer']['passtype'];
+			// CHECK PASS GENERATE OR NOT FOR SR. ADV/ ADVOCATE FOR THIS CASE
+			$sqlchk = "SELECT pass_no FROM gatepass_details_section WHERE pass_dt='$passdt' AND adv_cd='$advcd' AND passtype=$passtype  AND litigantmobile='$litigant_mob'";
+			$passchk = $this->fetchQuery($sqlchk, $this->bindParamArray);
+			
+			if(!empty($passchk)){
+				return "PASSEXISTS##".$_SESSION['lawyer']['CSRF_Token']; exit();
+			}
+			// CHECK PASS GENERATE OR NOT FOR SR. ADV/ ADVOCATE FOR THIS CASE
+			
+			$MyQuery="INSERT INTO gatepass_details_section(pass_dt, userid, userip, adv_cd, entry_dt, purpose_of_visit, passtype, pass_no, enroll_no, purposermks,passfor,litigantname,litigantmobile,litigant_address) VALUES('$passdt', '$userid', '$userip', '$advcd', NOW(), '$vist_purpose', $passtype, '$passNo', '$enroll', '$purposermks','$passfor','$litigant_name','$dbLitigantMobile','$litigant_address') returning id";
+			
+			$data = $this->insertQuery($MyQuery, $this->bindParamArray);
+			
+			$name	= $_SESSION['lawyer']['user_name'];
+			$mobile = $_SESSION['lawyer']['mobile'];
+				
+			if($data){
+				$estt = $_SESSION['lawyer']['connection'] == 'P' ? 'RHC Jodhpur' : 'RHCB Jaipur';
+				
+				// SEND PASS DETAIL TO ADVOCATE
+				if($passtype == '1'){
+					$dlt_template_id = '1107160033864143735';
+					$message = "Entry pass issued for $name, Sr. Advocate is valid for Ancillary Purposes other than court hearing on $pass_dt only in $estt.";
+				}
+				else if($passtype == '2'){
+					$dlt_template_id = '1107160033864143735';
+					$message = "Entry pass issued for $name, Advocate is valid for Ancillary Purposes other than court hearing on $pass_dt only in $estt.";
+				}
+				else if($passtype == '3'){
+					$dlt_template_id = '1107160033864143735';
+					$message = "Entry pass issued for $name, Party-in-Person is valid for Ancillary Purposes other than court hearing on $pass_dt only in $estt.";
+				}
+				$message = urlencode($message);
+				
+				// SMS CODE
+				$url = "https://smsgw.sms.gov.in/failsafe/HttpLink?username=courts-raj.sms&pin=A%25%5Eb3%24*z7&message=$message&mnumber=$mobile&signature=RCOURT&dlt_entity_id=1101333050000031038&dlt_template_id=$dlt_template_id";
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_HTTPHEADER, false);
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //needed so that the $result=curl_exec() output is the file and isn't just true/false
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				$result = curl_exec($ch);
+				curl_close($ch);
+				// SEND PASS DETAIL TO ADVOCATE
+
+				$dbmobile = $this->getEncryptValue($mobile);
+				$MyQuery="INSERT INTO gatepass_sms_details(cino, causelist_dt, causelist_type, pass_no, adv_enroll, user_id, user_ip, entry_dt, mobile) VALUES('$cino', '$passdt', '-', '$passNo', '$enroll', '$userid', '$userip', NOW(), '$dbmobile')";
+				$res = $this->Query($MyQuery, $this->bindParamArray);
+				
+				return 'OK##'.$_SESSION['lawyer']['CSRF_Token'].'##'.$data[0]['id']; exit();
+			}
+			else{
+				return "NA##".$_SESSION['lawyer']['CSRF_Token']; exit();
+			}
+		}
 		
 		function GENERATE_PIP_SECTION_PASS($passfor, $passdt, $vist_purpose, $pass_dt, $purposermks)
 		{
@@ -1498,19 +1564,34 @@
 			return $data;
 		}
 		
+		// function GET_SECTION_PASS_DETAILS_FOR_PDF($passid)
+		// {
+		// 	/*$MyQuery="SELECT A.pass_no, to_char(A.pass_dt, 'DD/MM/YYYY') AS cl_dt, 
+		// 			to_char(A.entry_dt, 'DD/MM/YYYY') AS gen_dt, (SELECT string_agg(purpose, '<br/>') AS purpose FROM gatepass_purpose_visit WHERE id::TEXT = ANY (CONCAT('{', A.purpose_of_visit, '}')::TEXT[])) AS purposeofvisit
+		// 			FROM gatepass_details_section AS A
+		// 			WHERE A.id='$passid'";*/
+		// 	$MyQuery="SELECT A.pass_no, to_char(A.pass_dt, 'DD/MM/YYYY') AS cl_dt, A.purposermks,
+		// 	to_char(A.entry_dt, 'DD/MM/YYYY') AS gen_dt
+		// 	FROM gatepass_details_section AS A
+		// 	WHERE A.id='$passid'";
+		// 	$data = $this->fetchQuery($MyQuery, $this->bindParamArray);
+		// 	return $data;
+		// }
 		function GET_SECTION_PASS_DETAILS_FOR_PDF($passid)
-		{
-			/*$MyQuery="SELECT A.pass_no, to_char(A.pass_dt, 'DD/MM/YYYY') AS cl_dt, 
-					to_char(A.entry_dt, 'DD/MM/YYYY') AS gen_dt, (SELECT string_agg(purpose, '<br/>') AS purpose FROM gatepass_purpose_visit WHERE id::TEXT = ANY (CONCAT('{', A.purpose_of_visit, '}')::TEXT[])) AS purposeofvisit
-					FROM gatepass_details_section AS A
-					WHERE A.id='$passid'";*/
-			$MyQuery="SELECT A.pass_no, to_char(A.pass_dt, 'DD/MM/YYYY') AS cl_dt, A.purposermks,
-			to_char(A.entry_dt, 'DD/MM/YYYY') AS gen_dt
-			FROM gatepass_details_section AS A
-			WHERE A.id='$passid'";
-			$data = $this->fetchQuery($MyQuery, $this->bindParamArray);
-			return $data;
-		}
+{
+    $MyQuery = "
+        SELECT 
+            A.*,
+            to_char(A.pass_dt, 'DD/MM/YYYY') AS cl_dt,
+            to_char(A.entry_dt, 'DD/MM/YYYY') AS gen_dt
+        FROM gatepass_details_section AS A
+        WHERE A.id = '$passid'
+    ";
+
+    $data = $this->fetchQuery($MyQuery, $this->bindParamArray);
+    return $data;
+}
+
 
 		function SP_INSERT_COVID_VACCINATION_STATUS_USERS($userid, $firstdose, $seconddose, $certrefid, $seconddosedate, $certfilepath, $userip, $estt)
 		{

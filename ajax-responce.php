@@ -925,6 +925,8 @@ class Insert_USER_Detail extends spoperation{
 						$res[$i]['pass_no'] 	= $row['pass_no'];
 						$res[$i]['pass_dt']		= $row['pass_dt'];
 						$res[$i]['entry_dt'] 	= $row['entry_dt'];
+						$res[$i]['passfor'] 	= $row['passfor'];
+						$res[$i]['litigantname'] 	= $row['litigantname'];
 						
 						$purposermks = json_decode($row['purposermks'], true);
 						$purposeRemarks = '';
@@ -1348,15 +1350,17 @@ class Insert_USER_Detail extends spoperation{
 		$litigant_mob = htmlentities(trim(base64_decode($_POST['litigant_mob'])));
 		$litigant_name  = stripslashes(base64_decode($_POST['litigant_name']));
 		$passtype = $_SESSION['lawyer']['passtype'];
+		$dbLitigantMobile=$this->getEncryptValue($litigant_mob);
+		$litigant_address=htmlentities(base64_decode($_POST['litigant_address']));
 		
 		$passdt  = implode('-', array_reverse(explode('/', $pass_dt)));
 			if($this->StringValidtion($passfor) && $this->DateValidtion($passdt) && $this->validateAddressString($vist_purpose)){
 			$call = new spoperation();
-			if($passtype == '1' || $passtype == '2')
-				$res  = $call->GENERATE_ADV_SECTION_PASS($passfor, $passdt, $vist_purpose, $pass_dt, $purposermks);
-			else if($passtype == '3')
-				$res  = $call->GENERATE_PIP_SECTION_PASS($passfor, $passdt, $vist_purpose, $pass_dt, $purposermks);
+			if($passtype == '2'){
+				$res  = $call->GENERATE_ADV_SECTION_PASS_FOR_LITIGANT($passfor, $passdt, $vist_purpose, $pass_dt, $purposermks,$litigant_name,$litigant_mob,$dbLitigantMobile,$litigant_address);
+			}
 			echo json_encode($res); exit();
+				
 		}
 		else{
 			echo json_encode("IVI##".$_SESSION['lawyer']['CSRF_Token']); exit();

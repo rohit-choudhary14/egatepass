@@ -346,6 +346,7 @@
 	}
 
 	function searchsectionpass(){
+
 		$("#searchEntriesTable").hide();
 		var csrf 	= $.trim($('#csrftoken').val());
 		var fromdt 	= $.trim($('#from_dt').val());
@@ -388,19 +389,20 @@
 								//btnShow='display:none"';
 							}
 							
-							/*if($.trim(data[i]['passfor']) == 'L'){
-								passname = $.trim(data[i]['party_name']);
+							if($.trim(data[i]['passfor']) == 'LS'){
+								passname = $.trim(data[i]['litigantname']);
 								mobile	 = $.trim(data[i]['party_mob_no']);
 								passfor  = 'Litigant';
+								console.log(data)
 							}
 							else{
 								passname = "<?php echo $_SESSION['lawyer']['user_name']; ?>";
 								mobile   = "<?php echo $mobile; ?>";
 								passfor  = 'Self';
-							}*/
-							passname = "<?php echo $_SESSION['lawyer']['user_name']; ?>";
-							mobile   = "<?php echo $mobile; ?>";
-							passfor  = 'Self';
+							}
+							// passname = "<?php echo $_SESSION['lawyer']['user_name']; ?>";
+							// mobile   = "<?php echo $mobile; ?>";
+							// passfor  = 'Self';
 							
 							trhtml += '<tr><td style="width:5%; text-align:center !important;">'+total+'</td><td style="width:10%;">'+data[i]['pass_no']+'</td><td style="width:10%;">'+data[i]['pass_dt']+'</td><td style="width:25%;">'+data[i]['purposermks']+'</td><td style="width:10%;">'+data[i]['entry_dt']+'</td><td style="width:10%;">'+passfor+'</td><td style="width:10%;"><button type="button" onclick="sendPassAgain(this.id)" data-mob="'+mobile+'" data-id="'+data[i]['id']+'" id="btnSend_'+data[i]['id']+'" style="padding:6px 10px !important; '+btnShow+'" class="btn btn-info" data-toggle="tooltip" data-original-title="Resend ePass details"><i class="fa fa-send"></i></button><button type="button" class="btn btn-primary" onclick="showPassDetails(this.id)" data-id="'+data[i]['id']+'" data-dt="'+data[i]['pass_dt']+'" data-name="'+passname+'" id="showbtn_'+data[i]['id']+'" style="padding:6px 10px !important; margin-left:5px;" data-toggle="tooltip" data-original-title="View ePass details"><i class="fa fa-eye"></i></button></td></tr>';
 						}

@@ -70,7 +70,7 @@ if($_POST['QueryType'] == 'getePassPdf')
 	}
 	
 	$dataArr = array();
-	//print_r($getPassData); die;
+	// print_r($getPassData); die;
 	foreach($getPassData AS $row)
 	{
 		$dataArr[] = $row;
@@ -168,6 +168,7 @@ if($_POST['QueryType'] == 'getePassPdf')
 		if($dataArr[0]['passfor'] == 'L' && $_SESSION['lawyer']['passtype'] == '2'){
 			$html .='<tr><td colspan="4" style="text-align:center;"><b>Pass for Litigant</b></td></tr>';
 		}
+		
 		else if($dataArr[0]['passfor'] == 'J' && $_SESSION['lawyer']['passtype'] == '2'){
 			$html .='<tr><td colspan="4" style="text-align:center;"><b>Pass for Jr. Advocate</b></td></tr>';
 		}
@@ -198,11 +199,11 @@ if($_POST['QueryType'] == 'getePassPdf')
 					'.$dataArr[0]['res_name'].'
 				</td>
 			</tr>';
-		if($dataArr[0]['passfor'] == 'L'){
-    $warningText = 'Litigant must carry a valid Photo ID with this ePass.';
-} else {
-    $warningText = '';
-}
+		if(trim($dataArr[0]['passfor']) == 'L'){
+				$warningText = 'Litigant must carry a valid Photo ID with this ePass.';
+			} else {
+				$warningText = '';
+		}
 	if($dataArr[0]['passfor'] == 'L'){
 			// $html .='<tr>
 			// 	<td colspan="2" style="text-align: left;"><b>Present residential address</b></td>
@@ -227,13 +228,13 @@ if($_POST['QueryType'] == 'getePassPdf')
 			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span> and valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.';
 		}
 		else if($_SESSION['lawyer']['passtype'] == '3'){
-			$html .='<tr>
-					<td colspan="2" style="text-align: left;"><b>ID Details</b></td>
-					<td colspan="2" style="text-align: left;">
-						Photo ID Type: '.$idtype.', ID Number: '.$idnum.'
-					</td>
-				</tr>';
-			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.trim($_SESSION['lawyer']['user_name']).'</b></span> and valid for item no. <b>'.$dataArr[0]['item_no'].'</b> in court no. <b>'.$dataArr[0]['court_no'].'</b>.<br/><br/>This pass is valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.';
+			// $html .='<tr>
+			// 		<td colspan="2" style="text-align: left;"><b>ID Details</b></td>
+			// 		<td colspan="2" style="text-align: left;">
+			// 			Photo ID Type: '.$idtype.', ID Number: '.$idnum.'
+			// 		</td>
+			// 	</tr>';
+			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.trim($_SESSION['lawyer']['user_name']).'</b></span> and valid for item no. <b>'.$dataArr[0]['item_no'].'</b> in court no. <b>'.$dataArr[0]['court_no'].'</b>.This pass is valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only. Party in Person must carry a valid Photo ID with this ePass';
 		}
 
 
@@ -255,7 +256,7 @@ if($_POST['QueryType'] == 'getePassPdf')
 			</tr>
 			<tr>
     <td style="text-align:justify; width:80%;">
-        '.$warningText.'<br/><br/>
+       
         '.$validfor.'
     </td>
     <td style="text-align:center; width:20%;">
@@ -264,8 +265,30 @@ if($_POST['QueryType'] == 'getePassPdf')
 </tr></table>';
 	}
 	else if($download == 'S'){
-		if($_SESSION['lawyer']['passtype'] == '2'){
+		// if($dataArr[0]['passfor'] == 'L' || $dataArr[0]['passfor'] == 'LS'){
+		// 	// $html .='<tr>
+		// 	// 	<td colspan="2" style="text-align: left;"><b>Present residential address</b></td>
+		// 	// 	<td colspan="2" style="text-align: left;">
+		// 	// 		'.$dataArr[0]['paddress'].'
+		// 	// 	</td>
+		// 	// </tr>';
+												 
+		// 	$html .='<tr>
+		// 		<td colspan="2" style="text-align: left;"><b>Pass recommended by</b></td>
+		// 		<td colspan="2" style="text-align: left;">
+		// 			'.$_SESSION['lawyer']['user_name'].', Advocate
+		// 		</td>
+		// 	</tr>';
+
+		// 	$validfor = 'This entry pass is issued for <b>'.$dataArr[0]['party_name'].'</b> &nbsp;R/O of <b>'.$dataArr[0]['paddress'].'</b>  and valid for item no. <b>'.$dataArr[0]['item_no'].'</b> in court no. <b>'.$dataArr[0]['court_no'].'</b>.This pass is valid for case hearing on <b>'.$dataArr[0]['cl_dt'].'</b> only.'.$warningText.'';
+		// }
+
+		if($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) != 'LS'){
+			
 			$html .='<tr><td colspan="4" style="text-align:center;"><b>Pass for Advocate</b></td></tr>';
+		}
+		else if($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) == 'LS'){
+			$html .='<tr><td colspan="4" style="text-align:center;"><b>Pass for Litigant</b></td></tr>';
 		}
 		else if($_SESSION['lawyer']['passtype'] == '1'){
 			$html .='<tr><td colspan="4" style="text-align:center;"><b>Pass for Sr. Advocate</b></td></tr>';
@@ -280,37 +303,64 @@ if($_POST['QueryType'] == 'getePassPdf')
 					<td style="text-align:left; width:15%;"><b>Pass Number</b></td>
 					<td style="text-align:left; width:35%;">'.$dataArr[0]['pass_no'].'</td>
 				</tr>';
-		
-		$purposermks = json_decode($dataArr[0]['purposermks'], true);
-		$remarks = '';
-		$purposeVisit = '';
-		foreach($purposermks as $pur){
-			if($purposeVisit == '')
-				$purposeVisit = $pur['purpose'];
-			else
-				$purposeVisit .= "<br />".$pur['purpose'];
-			if($remarks == '')
-				$remarks = $pur['remark'];
-			else
-				$remarks .= "<br />".$pur['remark'];
-		}
-		$html .='<tr>
-					<td colspan="2" style="text-align:left;"><b>Purpose of Visit</b></td>
-					<td colspan="2" style="text-align:left;"><b>'.$purposeVisit.'</b></td>
+			$purposermks = json_decode($dataArr[0]['purposermks'], true);
+
+			$remarks = '';
+			$purposeVisit = '';
+
+			foreach($purposermks as $index => $pur){
+
+				// PURPOSE
+				if ($purposeVisit != '') {
+					$purposeVisit .= "<br>------------------------------<br>";
+				}
+				$purposeVisit .= $pur['purpose'];
+
+				// REMARK
+				if ($remarks != '') {
+					$remarks .= "<br>------------------------------<br>";
+				}
+				$remarks .= $pur['remark'];
+			}
+			$html .= '
+			<tr>
+				<td style="text-align:left; width:15%;"><b>Purpose of Visit</b></td>
+				<td style="text-align:left; width:35%;"><b>'.$purposeVisit.'</b></td>
+
+				<td style="text-align:left; width:15%;"><b>Remarks</b></td>
+				<td style="text-align:left; width:35%;">'.$remarks.'</td>
+			</tr>';
+			if ($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) == 'LS') {
+
+				$html .= '
+				<tr>
+					<td colspan="2" style="text-align:left;"><b>Pass recommended by</b></td>
+					<td colspan="2" style="text-align:left;">
+						'.$_SESSION['lawyer']['user_name'].', Advocate
+					</td>
 				</tr>';
-		$html .='<tr>
-					<td colspan="2" style="text-align:left;"><b>Remarks</b></td>
-					<td colspan="2" style="text-align:left;">'.$remarks.'</td>
-				</tr>';
+			}
 		
-		if($_SESSION['lawyer']['passtype'] == '2'){
+		if($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) != 'LS'){
 			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span>, Advocate and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>'.$dataArr[0]['cl_dt'].'</b></span> only.';
+		}
+		else if($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) == 'LS'){
+				$validfor = 
+			'This entry pass is issued for <span style="font-size: 12pt;"><b>' 
+			. ucwords(strtolower(trim($dataArr[0]['litigantname']))) .
+			'</b> R/O  of<b>' 
+			. trim($dataArr[0]['litigant_address']) .
+			'</b></span>, and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>' 
+			. $dataArr[0]['cl_dt'] .
+			'</b></span> only. Litigant must carry a valid Photo ID with this ePass.';
+
+
 		}
 		else if($_SESSION['lawyer']['passtype'] == '1'){
 			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span>, Sr. Advocate and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>'.$dataArr[0]['cl_dt'].'</b></span> only.';
 		}
 		else if($_SESSION['lawyer']['passtype'] == '3'){
-			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span>, Party in Person and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>'.$dataArr[0]['cl_dt'].'</b></span> only.';
+			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span>, Party in Person and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>'.$dataArr[0]['cl_dt'].'</b></span> only.Party in Person must carry a valid Photo ID with this ePass';
 		}
 		
 		$html .= '</table>
