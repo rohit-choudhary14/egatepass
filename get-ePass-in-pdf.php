@@ -345,10 +345,9 @@ if($_POST['QueryType'] == 'getePassPdf')
 			$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>'.$_SESSION['lawyer']['user_name'].'</b></span>, Advocate and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>'.$dataArr[0]['cl_dt'].'</b></span> only.';
 		}
 		else if($_SESSION['lawyer']['passtype'] == '2' && trim($dataArr[0]['passfor']) == 'LS'){
-				$validfor = 
-			'This entry pass is issued for <span style="font-size: 12pt;"><b>' 
+				$validfor = 'This entry pass is issued for <span style="font-size: 12pt;"><b>' 
 			. ucwords(strtolower(trim($dataArr[0]['litigantname']))) .
-			'</b> R/O  of<b>' 
+			'</b> R/O  of <b>' 
 			. trim($dataArr[0]['litigant_address']) .
 			'</b></span>, and valid for Ancillary Purposes other than court hearing on <span style="font-size: 12pt;"><b>' 
 			. $dataArr[0]['cl_dt'] .
@@ -378,13 +377,14 @@ if($_POST['QueryType'] == 'getePassPdf')
 				</tr>
 				<tr>
 					<td style="text-align:justify; width:80%;">
-        '.$warningText.'<br/><br/>
-        '.$validfor.'
-    </td>
+						
+						'.$validfor.'
+					</td>
 					<td style="text-align:center; width:20%;">
 						'.$dataArr[0]['gen_dt'].'
 					</td>
-				</tr></table>';
+				</tr>
+				</table>';
 	}
 	
 	$html .="</html>";

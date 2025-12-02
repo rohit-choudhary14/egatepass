@@ -232,11 +232,12 @@
 				</div>
 				
 				<div class="col-md-12 DIV_PASS_FOR_PARTY" style="margin-top:15px; display:none;">
-					<label class="col-md-3" style="text-align:left !important"> Select Litigant Name :</label>
+					<label class="col-md-3" style="text-align:left !important"> Enter Litigant Name :</label>
 					<div class="col-md-3">
-						<select class="form-control" id="passPartyNo">
+						<select class="form-control" id="passPartyNo" style="display:none;">
 							<option value="">Select</option>
 						</select>
+						<input type="text" class="form-control uppercase" id="passPartyNo" name="passPartyNo" placeholder="Litigant Name" maxlength="100" style="text-transform:uppercase;" onkeypress="return AllowAlphabet(event);" autocomplete="off"/>
 					</div>
 					<label class="col-md-3" style="text-align:left !important">Litigant Mobile No :</label>
 					<div class="col-md-3">
@@ -663,7 +664,8 @@
 		$('.DIV_GEN_PASS').each(function(){
 			$(this).hide();
 		});
-		$('#passPartyNo').val(0);
+		// $('#passPartyNo').val(0);
+		$('#passPartyNo').val("");
 		$('#mobileno').val('');
 		$('#paddress').val('');
 		$('#paddress_litigant_section').val('');
@@ -875,9 +877,12 @@
 						$('.DIV_GEN_PASS_ADDRESS').hide();
 						
 						if(passfor == 'L'){
-							for(var i=1; i<data.length; i++){
-								$('#passPartyNo').append('<option value="'+data[i]['party_no']+'">'+data[i]['party_nm']+'</option>');
-							}
+							// for(var i=1; i<data.length; i++){
+							// 	console.log("in litigant passfor",data[i]['party_no'],data[i]['party_nm']);
+							// }
+							// for(var i=1; i<data.length; i++){
+							// 	$('#passPartyNo').append('<option value="'+data[i]['party_no']+'">'+data[i]['party_nm']+'</option>');
+							// }
 							$('.DIV_PASS_FOR_PARTY').show();
 							$('.DIV_GEN_PASS_ADDRESS').show();
 						}
@@ -928,6 +933,14 @@
 		
 		var mobile = "<?php echo $mobileno; ?>";
 		var advName = "<?php echo $_SESSION['lawyer']['user_name'];?>";
+        if(passfor=="L"){
+			partynm= $.trim($('#passPartyNo').val());
+			partyno=1;
+			// console.log(party,passfor,partyno,partymob,partynm)
+			console.log(type, no, year, cltype, cl_dt, passfor, party, partyno, partymob, paddress);
+
+		}
+		console.log(type, no, year, cltype, cl_dt, passfor, party, partyno, partymob, paddress);
 
 		//if(type == '0' || no == '' || year == '0' || cltype == '0' || cl_dt == '' || paddress == '' || (passfor == 'L' && (party == '0' || partyno == '' || partymob == ''))){
 		if(type == '0' || no == '' || year == '0' || cltype == '0' || cl_dt == '' || (passfor == 'L' && (party == '0' || partyno == '' || partymob == '' || paddress == ''))){
