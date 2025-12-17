@@ -781,16 +781,16 @@
 			$('#blank_field_modal').modal('show');
 			return false;
 		}
-		// else if(!isPastDate(today, cl_dt)){
-		// 	$('#modelText').text('Please check causelist date');
-		// 	$('#blank_field_modal').modal('show');
-		// 	return false;
-		// }
-		// else if(!isPastDate(cl_dt, lastdt)){
-		// 	$('#modelText').text('Future causelist still not prepaired');
-		// 	$('#blank_field_modal').modal('show');
-		// 	return false;
-		// }
+		else if(!isPastDate(today, cl_dt)){
+			$('#modelText').text('Please check causelist date');
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
+		else if(!isPastDate(cl_dt, lastdt)){
+			$('#modelText').text('Future causelist still not prepaired');
+			$('#blank_field_modal').modal('show');
+			return false;
+		}
 		else{
 			$('#passPartyNo').html('<option value="">Select</option>');
 			$('#mobileno').val('');
@@ -967,10 +967,10 @@
 			$('#modelText').text("After court hours you can't generate pass for today causelist");
 			$('#blank_field_modal').modal('show');
 		}
-		// else if(!isPastDate(today, cl_dt)){
-		// 	$('#modelText').text('Please check causelist date');
-		// 	$('#blank_field_modal').modal('show');
-		// }
+		else if(!isPastDate(today, cl_dt)){
+			$('#modelText').text('Please check causelist date');
+			$('#blank_field_modal').modal('show');
+		}
 		else if(!isPastDate(cl_dt, lastdt)){
 			$('#modelText').text('Future causelist still not prepaired');
 			$('#blank_field_modal').modal('show');
@@ -1111,10 +1111,10 @@
 			$('#modelText').text("After court hours you can't generate pass for today");
 			$('#blank_field_modal').modal('show');
 		}
-		// else if(!isPastDate(today, pass_dt) || !isPastDate(pass_dt, lastdt)){
-		// 	$('#modelText').text('Please check pass date');
-		// 	$('#blank_field_modal').modal('show');
-		// }
+		else if(!isPastDate(today, pass_dt) || !isPastDate(pass_dt, lastdt)){
+			$('#modelText').text('Please check pass date');
+			$('#blank_field_modal').modal('show');
+		}
 		else{
 			$('#showCaseDetails').modal('hide');
 			swal({
@@ -1219,10 +1219,10 @@
 			$('#modelText').text("After court hours you can't generate pass for today");
 			$('#blank_field_modal').modal('show');
 		}
-		// else if(!isPastDate(today, pass_dt) || !isPastDate(pass_dt, lastdt)){
-		// 	$('#modelText').text('Please check pass date');
-		// 	$('#blank_field_modal').modal('show');
-		// }
+		else if(!isPastDate(today, pass_dt) || !isPastDate(pass_dt, lastdt)){
+			$('#modelText').text('Please check pass date');
+			$('#blank_field_modal').modal('show');
+		}
 		else{
 			$('#showCaseDetails').modal('hide');
 			swal({
@@ -1292,14 +1292,14 @@
 		var today  = "<?php echo date('d/m/Y'); ?>";
 		$(".datepickercalender").datepicker({
 			format: 'dd/mm/yyyy',
-			// startDate: today,
-			// endDate: endt,
-			// autoclose: true
+			startDate: today,
+			endDate: endt,
+			autoclose: true,
 			// dateFormat: 'dd/mm/yy',
-    changeMonth: true,
-    changeYear: true,
-    maxDate: 0,        // Today tak allowed
-    minDate: null  
+    // changeMonth: true,
+    // changeYear: true,
+    // maxDate: 0,        // Today tak allowed
+    // minDate: null  
 		});
 		getcasetype();
 	});
