@@ -1,4 +1,4 @@
-<?phplocalhostlocalhost
+<?php
 	include 'urlConfig.php';
 	if(isset($_SESSION['lawyer']['user_id']) && $_SESSION['lawyer']['user_id'] != "")
 	{
@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>RHC e-Gate Pass | Register</title>			 	
+		<title>RHC | Register</title>			 	
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="noindex, nofollow">      
 		<meta http-equiv="cache-control" content="max-age=0" />
@@ -135,13 +135,13 @@
 		</div>
 		<div class="row" style="margin-bottom:20px;">
 			<div class="form-group">
-				<label class="control-label col-md-3">Pass Type:</label>
+				<label class="control-label col-md-3"></label>
 				<div class="col-md-7 col-sm-10">
 					<label class="radio-inline">
 						<input type="radio" name="passtype" class="passtype" value="1" onclick="chkPassType();"> Sr. Advocate
 					</label>
 					<label class="radio-inline">
-						<input type="radio" name="passtype" class="passtype" value="2" onclick="chkPassType();"> Advocate (For Self and Litigants)
+						<input type="radio" name="passtype" class="passtype" value="2" onclick="chkPassType();"> Advocate
 					</label>
 					<label class="radio-inline">
 						<input type="radio" name="passtype" class="passtype" value="3" onclick="chkPassType();"> Party in Person

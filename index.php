@@ -1,6 +1,6 @@
 <?php
 	if(date('Y-m-d H:i:s') > '2020-11-14 00:01:00' && date('Y-m-d H:i:s') < '2020-11-16 10:01:00') { 
-		header("Location: https://localhost/hcraj/maintenance.php");
+		header("Location: https://hcraj.nic.in/hcraj/maintenance.php");
 	}
 	
 	include 'urlConfig.php';

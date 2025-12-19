@@ -65,12 +65,12 @@ background:#fff !important;
 			</div>
 			<div class="collapse navbar-collapse topnav" id="myNavbar">
 				<ul class="nav navbar-nav " id="titleList">
-					<!--<li style="z-index:1;" class="list" style="z-index:1;"><a href="https://localhost/hcraj/Allfiles/E-Pass_User_Guide.pdf" target="_blank">Help</a></li>-->
+					<!--<li style="z-index:1;" class="list" style="z-index:1;"><a href="https://hcraj.nic.in/hcraj/Allfiles/E-Pass_User_Guide.pdf" target="_blank">Help</a></li>-->
 					<li style="z-index:1;">
 						<a id="drop2" style="cursor:pointer;" role="button" class="dropdown-toggle" data-toggle="dropdown">Help <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-							<li style="z-index:1;"><a style="cursor:pointer;" href="https://localhost/hcraj/Allfiles/E-Pass_User_Guide.pdf" target="_blank">e-Pass</a></li>
-							<!-- <li style="z-index:1;"><a style="cursor:pointer;" href="https://localhost/hcraj/Allfiles/User_Manual_Vaccination_Certificate_Upload.pdf" target="_blank">Upload Vaccination Certificate</a></li> -->
+							<li style="z-index:1;"><a style="cursor:pointer;" href="https://hcraj.nic.in/hcraj/Allfiles/E-Pass_User_Guide.pdf" target="_blank">e-Pass</a></li>
+							<!-- <li style="z-index:1;"><a style="cursor:pointer;" href="https://hcraj.nic.in/hcraj/Allfiles/User_Manual_Vaccination_Certificate_Upload.pdf" target="_blank">Upload Vaccination Certificate</a></li> -->
 						</ul>
 					</li>
 					<?php if(isset($_SESSION['lawyer']['user_id']) && $_SESSION['lawyer']['user_id'] != '') { ?>

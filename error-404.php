@@ -86,7 +86,7 @@ header("Set-Cookie: hidden=value; httpOnly");
 					<div class="col-md-12 error-msg">
 						<h1 class="error-h1">404</h1>
 						<h2 class="error-h2">Sorry! The page you were looking for could not be found</h2><br/><br/><br/>
-						<a href="http://localhost" class="btn btn-danger">Go Back Home Page</a>
+						<a href="http://hcraj.nic.in" class="btn btn-danger">Go Back Home Page</a>
 					</div>
 				</div>
 				<div class="col-md-2"></div>

@@ -1,4 +1,4 @@
-<?phplocalhostlocalhost
+<?php
 	include 'urlConfig.php';
 	if(isset($_SESSION['lawyer']['user_id']) && $_SESSION['lawyer']['user_id'] != "")
 	{
